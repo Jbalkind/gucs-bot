@@ -9,6 +9,7 @@ Euan Freeman
 
 from xml.dom import minidom
 import urllib2
+import urllib
 
 def wikiSearch(query, limit=5):
     """
@@ -20,7 +21,7 @@ def wikiSearch(query, limit=5):
     """
     url = "http://en.wikipedia.org/w/api.php?" \
         + "format=xml&action=opensearch&limit=%d&search=%s" \
-        % (limit, urllib2.quote(query))
+        % (limit, urllib.quote(query))
         
     handle = urllib2.urlopen(url)
     
