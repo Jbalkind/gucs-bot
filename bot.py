@@ -69,6 +69,15 @@ class Bot(Observer):
         self.irc.send(channel, msg)
     
     
+    def me(self, msg, channel=""):
+        """
+        Sends a /me message to specified channel.
+        """
+        if channel == "": channel = self.channel
+        
+        self.irc.me(channel, msg)
+    
+    
 # Callbacks
 def umad(bot, data):
     bot.send("U mad?")
@@ -96,6 +105,10 @@ def wikisearch(bot, data):
         bot.send("* %s: %s" % (result[0], result[1]))
 
 
+def slap(bot, data):
+    bot.me("slaps %s with a wet fish!" % data["message"].replace("!slap ", ""))
+
+
 # Main function
 def main():
     server = "irc.freenode.net"
@@ -110,6 +123,7 @@ def main():
     gucsbot.register("(f|F)riday", friday)
     gucsbot.register("(u|U) (dun|done) (goofed|goof'd|goofd)", goofed)
     gucsbot.register("!wiki \w+", wikisearch)
+    gucsbot.register("!slap \w", slap)
     
 if __name__ == "__main__":
     main()
