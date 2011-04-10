@@ -2,6 +2,7 @@ import threading
 import Input
 import Output 
 from Irc.irc import Irc
+from datetime import datetime
 import re # Regular expressions
 import wiki
 
@@ -35,6 +36,7 @@ class Bot(Observer):
         self.output.start()
         
         self.callbacks = {}
+        self.activity = {} # Maps usernames to activity
     
     
     def notify(self, data):
@@ -51,6 +53,8 @@ class Bot(Observer):
             if re.match(pattern, data["message"]) != None:
                 self.callbacks[pattern](self, data)
                 break
+                
+        self.activity[data["from"]] = datetime.now()
                 
     
     def register(self, pattern, callback):
@@ -109,6 +113,34 @@ def slap(bot, data):
     bot.me("slaps %s with a wet fish!" % data["message"].replace("!slap ", ""))
 
 
+def seen(bot, data):
+    user = data["message"].replace("!seen ", "")
+    
+    if user not in bot.activity:
+        bot.send("I haven't seen %s around here" % user)
+    else:
+        lastSeen = datetime.now() - bot.activity[user]
+        
+        days = lastSeen.days
+        mins = lastSeen.seconds / 60
+        hours = mins / 60
+        
+        daysStr = ("%d days, " % days) if days > 0 else ""
+        hoursStr = ("%d hours and " % hours) if hours > 0 else ""
+        timeAgo = "%s%s%d minutes" % (daysStr, hours, mins)
+        
+        bot.send("%s was last seen %s ago" % (user, timeAgo))
+
+        
+def moo(bot, data):
+    bot.send("         (__)")
+    bot.send("         (oo)")
+    bot.send("  /-------\/   Moooooo!")
+    bot.send(" / |     ||")
+    bot.send("*  ||----||")
+    bot.send("   ~~    ~~")
+    
+
 # Main function
 def main():
     server = "irc.freenode.net"
@@ -124,6 +156,8 @@ def main():
     gucsbot.register("(u|U) (dun|done) (goofed|goof'd|goofd)", goofed)
     gucsbot.register("!wiki \w+", wikisearch)
     gucsbot.register("!slap \w", slap)
+    gucsbot.register("!seen \w", seen)
+    gucsbot.register("(m|M)ooo*", moo)
     
 if __name__ == "__main__":
     main()
