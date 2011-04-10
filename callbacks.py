@@ -106,7 +106,7 @@ callback_list = [("(p|P)roblem\?", umad),
                  ("!slap \w", slap),
                  ("!seen \w", seen),
                  ("(m|M)ooo*", moo),
-                 ("!search \w+", websearch)
+                 ("!search \w+", websearch),
                  ("!twitter \w+", twittersearch)]
 
 
