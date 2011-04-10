@@ -108,7 +108,7 @@ def main():
 
     gucsbot = Bot(server, channel, nick, name)
     load_callbacks(gucsbot)
-    gucsbot.register("!update", force_reload)
+	gucsbot.register("!update", force_reload)
 	gucsbot.register("!svn", svn_update)
 
 if __name__ == "__main__":
