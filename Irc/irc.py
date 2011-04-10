@@ -51,7 +51,7 @@ class Irc:
         if not self.nickname:
             raise NoInfoSet
             
-        self.socket.send("PRIVMSG %s :%s\r\n" % (channel, msg)
+        self.socket.send("PRIVMSG %s :%s\r\n" % (channel, msg))
         
         
     """ Send a /me command to the specifed room """ 
