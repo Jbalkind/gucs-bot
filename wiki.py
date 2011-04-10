@@ -51,6 +51,6 @@ def parse(dom):
         title = result.getElementsByTagName("Text")[0].childNodes[0].nodeValue
         url = result.getElementsByTagName("Url")[0].childNodes[0].nodeValue
         
-        results += (title, url)
+        results += [(title, url)]
         
     return results

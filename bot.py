@@ -3,6 +3,7 @@ import Input
 import Output 
 from Irc.irc import Irc
 import re # Regular expressions
+import wiki
 
 class Observer:
     def notify(self, msg):
@@ -69,7 +70,6 @@ class Bot(Observer):
     
     
 # Callbacks
-    
 def umad(bot, data):
     bot.send("U mad?")
 
@@ -80,8 +80,22 @@ def friday(bot, data):
 
 def goofed(bot, data):
     bot.send("Sorry, %s" % data["from"])
+
+
+def wikisearch(bot, data):
+    query = data["message"].replace("!wiki ", "")
+    results = wiki.wikiSearch(query)
     
+    if (results == []):
+        bot.send("No wikipedia results for \"%s\"" % query)
+        return
     
+    bot.send("Wikipedia results for \"%s\":" % query)
+    
+    for result in results:
+        bot.send("* %s: %s" % (result[0], result[1]))
+
+
 # Main function
 def main():
     server = "irc.freenode.net"
@@ -95,6 +109,7 @@ def main():
     gucsbot.register("(p|P)roblem\?", umad)
     gucsbot.register("(f|F)riday", friday)
     gucsbot.register("(u|U) (dun|done) (goofed|goof'd|goofd)", goofed)
+    gucsbot.register("!wiki \w+", wikisearch)
     
 if __name__ == "__main__":
     main()
