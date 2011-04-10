@@ -77,6 +77,11 @@ def umad(bot, data):
 def friday(bot, data):
     bot.send("Friday, friday, gotta get down on Friday!")
     
+
+def goofed(bot, data):
+    bot.send("Sorry, %s" % data["from"])
+    
+    
 # Main function
 def main():
     server = "irc.freenode.net"
@@ -89,6 +94,7 @@ def main():
     # Register callbacks to give gucs-bot something to do
     gucsbot.register("(p|P)roblem\?", umad)
     gucsbot.register("(f|F)riday", friday)
+    gucsbot.register("(u|U) (dun|done) (goofed|goof'd|goofd)", goofed)
     
 if __name__ == "__main__":
     main()
