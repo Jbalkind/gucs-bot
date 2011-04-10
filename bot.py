@@ -4,6 +4,7 @@ import Output
 import callbacks
 from Irc.irc import Irc
 from datetime import datetime
+import re
 
 class Observer:
     def notify(self, msg):
