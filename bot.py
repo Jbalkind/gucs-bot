@@ -85,13 +85,11 @@ def force_reload(bot,data):
 
 	try:
 		reload(callbacks)
-		successful = True
+		load_callbacks(bot)
 	except:
 		bot.send("There was an error, callbacks were not reloaded.")
-		successful = False
 		
-	if successful == True:
-		load_callbacks(bot)
+	
 
 def load_callbacks(bot):
     for callback_tuple in callbacks.callback_list:
@@ -111,7 +109,7 @@ def main():
     gucsbot = Bot(server, channel, nick, name)
     load_callbacks(gucsbot)
     gucsbot.register("!update", force_reload)
-	gucsbot.register("!svn",  svn_update)
+	gucsbot.register("!svn", svn_update)
 
 if __name__ == "__main__":
     main()
