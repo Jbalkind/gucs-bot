@@ -1,6 +1,7 @@
 import threading
 import Input
 import Output
+import callbacks
 from Irc.irc import Irc
 from datetime import datetime
 import re # Regular expressions
@@ -83,109 +84,34 @@ class Bot(Observer):
 
         self.irc.me(channel, msg)
 
+def force_reload(bot,data):
+    reload(callbacks)
+    load_callbacks(bot)
 
-# Callbacks
-def umad(bot, data):
-    bot.send("U mad?")
-
-
-def friday(bot, data):
-    bot.send("Friday, friday, gotta get down on Friday!")
-
-
-def goofed(bot, data):
-    bot.send("Sorry, %s" % data["from"])
-
-
-def wikisearch(bot, data):
-    query = data["message"].replace("!wiki ", "")
-    results = wiki.wikiSearch(query)
-
-    if (results == []):
-        bot.send("No wikipedia results for \"%s\"" % query)
-        return
-
-    bot.send("Wikipedia results for \"%s\":" % query)
-
-    for result in results:
-        bot.send("* %s: %s" % (result[0], result[1]))
-
-
-def slap(bot, data):
-    bot.me("slaps %s with a wet fish!" % data["message"].replace("!slap ", ""))
-
-
-def seen(bot, data):
-    user = data["message"].replace("!seen ", "")
-
-    if user not in bot.activity:
-        bot.send("I haven't seen %s around here" % user)
-    else:
-        lastSeen = datetime.now() - bot.activity[user]
-
-        days = lastSeen.days
-        mins = lastSeen.seconds / 60
-        hours = mins / 60
-
-        daysStr = ("%d days, " % days) if days > 0 else ""
-        hoursStr = ("%d hours and " % hours) if hours > 0 else ""
-        timeAgo = "%s%s%d minutes" % (daysStr, hours, mins)
-
-        bot.send("%s was last seen %s ago" % (user, timeAgo))
-
-
-def moo(bot, data):
-    bot.send("         (__)")
-    bot.send("         (oo)")
-    bot.send("  /-------\/   Moooooo!")
-    bot.send(" / |     ||")
-    bot.send("*  ||----||")
-    bot.send("   ~~    ~~")
-    
-def websearch(bot, data):
-    query = data["message"].replace("!search ", "")
-    
-    try:
-        results = search.search(query)
-    except URLError:
-        bot.send("Sorry, I dun goofed")
-        return
-    
-    if (results == []):
-        bot.send("No search results for \"%s\"" % query)
-        return
-    
-    bot.send("Web results for \"%s\":" % query)
-    
-    for result in results:
-        bot.send("* %s: %s" % (result[0], result[1]))
-
-
-def update(bot, data):
-    if (data["from"] in bot.input.owners):
-        os.spawnv(os.P_NOWAIT, "update.sh", [])
-        bot.irc.quit()
-
+def load_callbacks(bot):
+    for callback_tuple in callbacks.callback_list:
+        bot.register(callback_tuple[0], callback_tuple[1])
 
 # Main function
 def main():
     server = "irc.freenode.net"
-    nick = "gucs-bot"
+    nick = "canardducky"
     channel = "##GUCS"
     name = "Sir Trollface Esq."
 
     gucsbot = Bot(server, channel, nick, name)
-
+    load_callbacks(gucsbot)
+    gucsbot.register("!update", force_reload)
     # Register callbacks to give gucs-bot something to do
-    gucsbot.register("(p|P)roblem\?", umad)
-    gucsbot.register("(f|F)riday", friday)
-    gucsbot.register("(u|U) (dun|done) (goofed|goof'd|goofd)", goofed)
-    gucsbot.register("!wiki \w+", wikisearch)
-    gucsbot.register("!slap \w", slap)
-    gucsbot.register("!seen \w", seen)
-    gucsbot.register("(m|M)ooo*", moo)
-    gucsbot.register("!search \w+", websearch)
-    gucsbot.register("!update", update)
+    # gucsbot.register("(p|P)roblem\?", callbacks.umad)
+    # gucsbot.register("(f|F)riday", callbacks.friday)
+    # gucsbot.register("(u|U) (dun|done) (goofed|goof'd|goofd)", callbacks.goofed)
+    # gucsbot.register("!wiki \w+", callbacks.wikisearch)
+    # gucsbot.register("!slap \w", callbacks.slap)
+    # gucsbot.register("!seen \w", callbacks.seen)
+    # gucsbot.register("(m|M)ooo*", callbacks.moo)
+    # gucsbot.register("!search \w+", callbacks.websearch)
+    # gucsbot.register("!update", force_reload)
 
 if __name__ == "__main__":
     main()
