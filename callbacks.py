@@ -2,6 +2,7 @@
 
 import wiki
 import search
+from datetime import datetime
 
 def umad(bot, data):
     bot.send("U mad?")
