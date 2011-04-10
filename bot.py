@@ -5,6 +5,7 @@ import callbacks
 from Irc.irc import Irc
 from datetime import datetime
 import re
+import os
 
 class Observer:
     def notify(self, msg):
@@ -88,17 +89,17 @@ def force_reload(bot,data):
 		load_callbacks(bot)
 	except:
 		bot.send("There was an error in callbacks.py, callbacks were not reloaded.")
-		
-	
+
+
 
 def load_callbacks(bot):
     for callback_tuple in callbacks.callback_list:
         bot.register(callback_tuple[0], callback_tuple[1])
 
 def svn_update(bot, data):
-	pass #to do
-		
-	
+	os.system("svn update")
+
+
 # Main function
 def main():
     server = "irc.freenode.net"
