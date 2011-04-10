@@ -95,23 +95,13 @@ def load_callbacks(bot):
 # Main function
 def main():
     server = "irc.freenode.net"
-    nick = "canardducky"
+    nick = "gucsbot"
     channel = "##GUCS"
     name = "Sir Trollface Esq."
 
     gucsbot = Bot(server, channel, nick, name)
     load_callbacks(gucsbot)
     gucsbot.register("!update", force_reload)
-    # Register callbacks to give gucs-bot something to do
-    # gucsbot.register("(p|P)roblem\?", callbacks.umad)
-    # gucsbot.register("(f|F)riday", callbacks.friday)
-    # gucsbot.register("(u|U) (dun|done) (goofed|goof'd|goofd)", callbacks.goofed)
-    # gucsbot.register("!wiki \w+", callbacks.wikisearch)
-    # gucsbot.register("!slap \w", callbacks.slap)
-    # gucsbot.register("!seen \w", callbacks.seen)
-    # gucsbot.register("(m|M)ooo*", callbacks.moo)
-    # gucsbot.register("!search \w+", callbacks.websearch)
-    # gucsbot.register("!update", force_reload)
 
 if __name__ == "__main__":
     main()
