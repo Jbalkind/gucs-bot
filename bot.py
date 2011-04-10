@@ -90,7 +90,7 @@ def force_reload(bot,data):
 		bot.send("There was an error, callbacks were not reloaded.")
 		successful = False
 		
-	if successful = True:
+	if successful == True:
 		load_callbacks(bot)
 
 def load_callbacks(bot):
