@@ -144,7 +144,7 @@ def moo(bot, data):
 def update(bot, data):
     if (data["from"] in bot.input.owners):
         os.spawnv(os.P_NOWAIT, "update.sh", [])
-        self.irc.quit()
+        bot.irc.quit()
 
 
 
