@@ -93,7 +93,7 @@ def twittersearch(bot, data):
         bot.send("No twitter search results for \"%s\"" % query)
         return
 
-        bot.send("Twitter search results for \"%s\":" % query)
+    bot.send("Twitter search results for \"%s\":" % query)
     
     for result in results:
         bot.send("* %s: %s" % (result[0], result[1]))
