@@ -6,18 +6,30 @@ import twitter
 from datetime import datetime
 
 def umad(bot, data):
-    bot.send("U mad?",)
+    """
+    When asked about problems, bot questions sainity
+    """
+    bot.send("U mad?!?!?",)
 
 
 def friday(bot, data):
+    """
+    What we sing on Fridays
+    """
     bot.send("Friday, friday, gotta get down on Friday!", channel=data["to"])
 
 
 def goofed(bot, data):
+    """
+    We all make mistakes
+    """
     bot.send("Sorry, %s" % data["from"], channel=data["to"])
 
 
 def wikisearch(bot, data):
+    """
+    Search wikipedia for a term
+    """
     query = data["message"].replace("!wiki ", "")
     results = wiki.wikiSearch(query)
 
@@ -35,15 +47,24 @@ def wikisearch(bot, data):
 
 
 def slap(bot, data):
+    """
+    Slap a user if they are silly
+    """
     print data["to"]
     bot.me("slaps %s with a wet fish!" %data["message"].replace("!slap ", ""),
            channel = data["to"])
 
 def sleep_time(bot,data):
+    """
+    Kill's the bot
+    """
     bot.send("No master!! No...")
     bot.irc.quit()
 
 def seen(bot, data):
+    """
+    Checks when the bot last saw a given nick
+    """
     user = data["message"].replace("!seen ", "")
 
     if user not in bot.activity:
@@ -65,6 +86,9 @@ def seen(bot, data):
 
 
 def moo(bot, data):
+    """
+    Bot sends picture of a cow
+    """
     bot.send("         -__-",channel=data["to"])
     bot.send("         (oo)",channel=data["to"])
     bot.send("  /-------\/   Moooooo!",channel=data["to"])
@@ -73,6 +97,9 @@ def moo(bot, data):
     bot.send("   ~~    ~~",channel=data["to"])
     
 def websearch(bot, data):
+    """
+    Search the web for a query
+    """
     query = data["message"].replace("!search ", "")
     
     try:
@@ -93,6 +120,9 @@ def websearch(bot, data):
 
 
 def twittersearch(bot, data):
+    """
+    Search twitter feeds for a term
+    """
     query = data["message"].replace("!twitter ", "")
     
     try:
@@ -113,7 +143,7 @@ def twittersearch(bot, data):
     for result in results:
         bot.send("* %s: %s" % (result[0], result[1]),
                  channel=data["to"])
-
+    
         
 callback_list = [("(p|P)roblem\?", umad),
                  ("(f|F)riday", friday),
@@ -123,6 +153,7 @@ callback_list = [("(p|P)roblem\?", umad),
                  ("!seen \w", seen),
                  ("(m|M)ooo*", moo),
                  ("!search \w+", websearch),
-                 ("!twitter \w+", twittersearch)]
+                 ("!twitter \w+", twittersearch),
+                 ("!shutup", sleep_time)]
 
 

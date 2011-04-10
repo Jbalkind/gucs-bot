@@ -66,8 +66,7 @@ class Bot(Observer):
         Registers a callback for an input pattern.
         """
         self.callbacks[pattern] = callback
-
-
+        
     def send(self, msg, channel=""):
         """
         Sends a message to specified channel.
@@ -86,25 +85,48 @@ class Bot(Observer):
         self.irc.me(channel, msg)
 
 def force_reload(bot,data):
-
+    """
+    Force the bot to reload its callback methods
+    """
     if (data["from"] in bot.input.owners):
-
     	try:
-    		reload(callbacks)
-    		load_callbacks(bot)
+            reload(callbacks)
+            load_callbacks(bot)
     	except:
     		bot.send("There was an error in callbacks.py, callbacks were not reloaded.")
 
 
+def help_user(bot, data):
+    """
+    Help function for the bot
+    """
+    bot.send("List of functions that this bot makes availible;",
+             channel=data["from"])
+    for callback, function in bot.callbacks.items():
+        #Change newlines to spaces
+        if function.__doc__ == None:
+            help_string = "No help for this function"
+        else:
+            help_string = function.__doc__.replace('\n'," ") 
+        bot.send("%s \t- %s" %(callback, help_string.strip()),
+                 channel=data["from"])
 
 def load_callbacks(bot):
+    """
+    Reload the callbacks for this bot
+    (owner only)
+    """
     for callback_tuple in callbacks.callback_list:
         bot.register(callback_tuple[0], callback_tuple[1])
 
 def svn_update(bot, data):
-
+    """
+    Update this bot with code from the svn repository
+    """
     if (data["from"] in bot.input.owners):
         os.system("svn update")
+
+
 
 
 # Main function
@@ -112,7 +134,8 @@ def main(server, nick, channels, name):
     gucsbot = Bot(server, channels, nick, name)
     load_callbacks(gucsbot)
     gucsbot.register("!update", force_reload)
-    gucsbot.register("!svn", svn_update)
+    gucsbot.register("!help", help_user)
+#    gucsbot.register("!svn", svn_update)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Friendly, Python, IRC bot")
@@ -126,14 +149,9 @@ if __name__ == "__main__":
                         default="gucs_bot",
                         help="Name of bot")
     parser.add_argument("channels", type = str, metavar='C',
-                        help="Channels to connect to, including \# with quotation marks",
+                        help="Channels to connect to, include \#'s with quotation marks",
                         nargs='+',)
     args = parser.parse_args()
     main(server = args.server, nick = args.nick, name = args.name,
          channels = args.channels)
-    print dir(args)
-    print args.name
-    print args.nick
-    print args.server
-    print args.channels
-    #main()
+
