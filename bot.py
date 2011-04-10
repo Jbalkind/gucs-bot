@@ -4,10 +4,6 @@ import Output
 import callbacks
 from Irc.irc import Irc
 from datetime import datetime
-import re # Regular expressions
-import wiki
-import search
-import os
 
 class Observer:
     def notify(self, msg):

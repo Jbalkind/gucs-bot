@@ -2,6 +2,7 @@
 
 import wiki
 import search
+import re # Regular expressions
 
 def umad(bot, data):
     bot.send("U mad?")
