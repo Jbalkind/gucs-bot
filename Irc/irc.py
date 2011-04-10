@@ -59,7 +59,7 @@ class Irc:
         if not self.nickname:
             raise NoInfoSet
             
-        self.socket.send(u"PRIVMSG %s :%sACTION %s%s\r\n" % (channel, self._hex01, msg, self._hex01))
+        self.socket.send("PRIVMSG %s :%sACTION %s%s\r\n" % (channel, self._hex01, msg, self._hex01))
             
          
     """ Parse a line sent by the server and pass it to any callback commands that have been registered for it """     
