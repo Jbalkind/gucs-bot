@@ -89,11 +89,11 @@ def twittersearch(bot, data):
         bot.send("err... something happened, that wasn't meant to")
         return
 
-   if (results == []):
+    if (results == []):
         bot.send("No twitter search results for \"%s\"" % query)
         return
 
-       bot.send("Twitter search results for \"%s\":" % query)
+        bot.send("Twitter search results for \"%s\":" % query)
     
     for result in results:
         bot.send("* %s: %s" % (result[0], result[1]))
