@@ -5,6 +5,7 @@ from Irc.irc import Irc
 from datetime import datetime
 import re # Regular expressions
 import wiki
+import os
 
 class Observer:
     def notify(self, msg):
@@ -142,6 +143,9 @@ def moo(bot, data):
 
 def update(bot, data):
     if (data["from"] in self.input.owners):
+        os.spawnv(os.P_NOWAIT, update.sh, "")
+        self.irc.quit()
+
 
 
 
