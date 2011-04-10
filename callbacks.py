@@ -1,4 +1,8 @@
 # Callbacks
+
+import wiki
+import search
+
 def umad(bot, data):
     bot.send("U mad?")
 
