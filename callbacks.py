@@ -2,6 +2,7 @@
 
 import wiki
 import search
+import twitter
 from datetime import datetime
 
 def umad(bot, data):
@@ -79,12 +80,25 @@ def websearch(bot, data):
         bot.send("* %s: %s" % (result[0], result[1]))
 
 
-def update(bot, data):
-    if (data["from"] in bot.input.owners):
-        os.spawnv(os.P_NOWAIT, "update.sh", [])
-        bot.irc.quit()
+def twittersearch(bot, data):
+    query = data["message"].replace("!search ", "")
+    
+    try:
+        results = twitter.search(query)
+    except:
+        bot.send("err... something happened, that wasn't meant to")
+        return
 
+   if (results == []):
+        bot.send("No twitter search results for \"%s\"" % query)
+        return
 
+       bot.send("Twitter search results for \"%s\":" % query)
+    
+    for result in results:
+        bot.send("* %s: %s" % (result[0], result[1]))
+
+        
 callback_list = [("(p|P)roblem\?", umad),
                  ("(f|F)riday", friday),
                  ("(u|U) (dun|done) (goofed|goof'd|goofd)", goofed),
@@ -92,6 +106,7 @@ callback_list = [("(p|P)roblem\?", umad),
                  ("!slap \w", slap),
                  ("!seen \w", seen),
                  ("(m|M)ooo*", moo),
-                 ("!search \w+", websearch)]
+                 ("!search \w+", websearch)
+                 ("!twitter \w+", twittersearch)]
 
 
