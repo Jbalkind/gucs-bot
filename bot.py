@@ -5,6 +5,7 @@ from Irc.irc import Irc
 from datetime import datetime
 import re # Regular expressions
 import wiki
+import search
 import os
 
 class Observer:
@@ -140,15 +141,30 @@ def moo(bot, data):
     bot.send(" / |     ||")
     bot.send("*  ||----||")
     bot.send("   ~~    ~~")
+    
+def websearch(bot, data):
+    query = data["message"].replace("!search ", "")
+    
+    try:
+        results = search.search(query)
+    except URLError:
+        bot.send("Sorry, I dun goofed")
+        return
+    
+    if (results == []):
+        bot.send("No search results for \"%s\"" % query)
+        return
+    
+    bot.send("Web results for \"%s\":" % query)
+    
+    for result in results:
+        bot.send("* %s: %s" % (result[0], result[1]))
+
 
 def update(bot, data):
     if (data["from"] in bot.input.owners):
         os.spawnv(os.P_NOWAIT, "update.sh", [])
         bot.irc.quit()
-
-
-
-
 
 
 # Main function
@@ -168,6 +184,7 @@ def main():
     gucsbot.register("!slap \w", slap)
     gucsbot.register("!seen \w", seen)
     gucsbot.register("(m|M)ooo*", moo)
+    gucsbot.register("!search \w+", websearch)
     gucsbot.register("!update", update)
 
 if __name__ == "__main__":
