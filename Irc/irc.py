@@ -42,6 +42,17 @@ class Irc:
         
         self.socket.send("JOIN :%s\r\n" % (room))
         
+    
+    def send(self, channel, msg):
+        """
+        Sends a message to the channel(s), separated by a single
+        comma and no spaces.
+        """
+        if not self.nickname:
+            raise NoInfoSet
+            
+        self.socket.send("PRIVMSG %s :%s\r\n" % (channel, msg))
+        
         
     """ Send a /me command to the specifed room """ 
     def me(self, channel, msg):
@@ -90,8 +101,13 @@ class Irc:
         if not self.server:
             raise NotConnected
             
-        while True:    
-            lines = self.socket.recv(1024)
+        while True:
+            try:
+                lines = self.socket.recv(1024)
+            except socket.error, e:
+                if e.args[0] == socket.EBADF:
+                    print "Err: Bad file descriptor!"
+                    exit(1)
                       
             # Make sure we've not closed the socket
             if not lines:
