@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import threading
 import Input
 import Output
@@ -6,6 +7,7 @@ from Irc.irc import Irc
 from datetime import datetime
 import re
 import os
+import argparse
 
 class Observer:
     def notify(self, msg):
@@ -19,15 +21,16 @@ class Bot(Observer):
     are triggered by a regular expression pattern match.
     """
 
-    def __init__(self, server, channel, nick, name):
+    def __init__(self, server, channels, nick, name):
         self.irc = Irc()
         self.irc.connect(server)
         self.irc.set_info(nick, nick)
 
-        self.channel = channel
+        self.channels = channels
 
-        self.irc.join(channel)
-        self.irc.me(channel, "has initiated self-destruct sequence!")
+        for channel in channels:
+            self.irc.join(channel)
+            self.irc.me(channel, "has initiated self-destruct sequence!")
 
         self.input = Input.Input(self.irc)
         self.input.registerObserver(self)
@@ -69,7 +72,7 @@ class Bot(Observer):
         """
         Sends a message to specified channel.
         """
-        if channel == "": channel = self.channel
+        #if channel == "": channel = self.channel
 
         self.irc.send(channel, msg)
 
@@ -78,7 +81,7 @@ class Bot(Observer):
         """
         Sends a /me message to specified channel.
         """
-        if channel == "": channel = self.channel
+        #if channel == "": channel = self.channel
 
         self.irc.me(channel, msg)
 
@@ -105,16 +108,32 @@ def svn_update(bot, data):
 
 
 # Main function
-def main():
-    server = "irc.freenode.net"
-    nick = "gucsbot"
-    channel = "##GUCS"
-    name = "Sir Trollface Esq."
-
-    gucsbot = Bot(server, channel, nick, name)
+def main(server, nick, channels, name):
+    gucsbot = Bot(server, channels, nick, name)
     load_callbacks(gucsbot)
     gucsbot.register("!update", force_reload)
     gucsbot.register("!svn", svn_update)
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser("Friendly, Python, IRC bot")
+    parser.add_argument("-s","--server",dest="server",action="store",
+                        default="irc.freenode.net",
+                        help="Name of IRC server to connect to, default is freenode")
+    parser.add_argument("-n","--nick",dest="nick",action="store",
+                        default="gucs_bot",
+                        help="Nickname for bot")
+    parser.add_argument("--name",dest="name",action="store",
+                        default="gucs_bot",
+                        help="Name of bot")
+    parser.add_argument("channels", type = str, metavar='C',
+                        help="Channels to connect to, including \# with quotation marks",
+                        nargs='+',)
+    args = parser.parse_args()
+    main(server = args.server, nick = args.nick, name = args.name,
+         channels = args.channels)
+    print dir(args)
+    print args.name
+    print args.nick
+    print args.server
+    print args.channels
+    #main()
