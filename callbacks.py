@@ -81,7 +81,7 @@ def websearch(bot, data):
 
 
 def twittersearch(bot, data):
-    query = data["message"].replace("!search ", "")
+    query = data["message"].replace("!twitter ", "")
     
     try:
         results = twitter.search(query)
