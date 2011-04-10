@@ -142,7 +142,7 @@ def moo(bot, data):
     bot.send("   ~~    ~~")
 
 def update(bot, data):
-    if (data["from"] in self.input.owners):
+    if (data["from"] in bot.input.owners):
         os.spawnv(os.P_NOWAIT, update.sh, [])
         self.irc.quit()
 
