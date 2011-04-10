@@ -84,11 +84,13 @@ class Bot(Observer):
 
 def force_reload(bot,data):
 
-	try:
-		reload(callbacks)
-		load_callbacks(bot)
-	except:
-		bot.send("There was an error in callbacks.py, callbacks were not reloaded.")
+    if (data["from"] in bot.input.owners):
+
+    	try:
+    		reload(callbacks)
+    		load_callbacks(bot)
+    	except:
+    		bot.send("There was an error in callbacks.py, callbacks were not reloaded.")
 
 
 
@@ -97,7 +99,9 @@ def load_callbacks(bot):
         bot.register(callback_tuple[0], callback_tuple[1])
 
 def svn_update(bot, data):
-	os.system("svn update")
+
+    if (data["from"] in bot.input.owners):
+        os.system("svn update")
 
 
 # Main function
