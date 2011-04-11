@@ -135,7 +135,7 @@ def main(server, nick, channels, name):
     load_callbacks(gucsbot)
     gucsbot.register("!update", force_reload)
     gucsbot.register("!help", help_user)
-#    gucsbot.register("!svn", svn_update)
+    gucsbot.register("!svn", svn_update)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Friendly, Python, IRC bot")

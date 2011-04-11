@@ -31,7 +31,11 @@ def parse(decoded):
 
 def main():
     print "dsf"
-    print search("george orwell")
+    results = search("george orwell")
+
+    for result in results:
+        print result[0] + ": " + result[1]
+        print " "
 
 if __name__ == "__main__":
     main()
