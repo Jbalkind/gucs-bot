@@ -3,6 +3,7 @@ import threading
 import Input
 import Output
 import callbacks
+from callbacks import Phrase_Response
 from Irc.irc import Irc
 from datetime import datetime
 import re
@@ -114,10 +115,12 @@ def help_user(bot, data):
 def load_callbacks(bot):
     """
     Reload the callbacks for this bot
-    (owner only)
     """
-    for callback_tuple in callbacks.callback_list:
-        bot.register(callback_tuple[0], callback_tuple[1])
+    for name, function in callbacks.callback_list:
+        bot.register(name, function)
+    for phrase, response in callbacks.text_response_list:
+        phrase_response = Phrase_Response(phrase, response)
+        bot.register(phrase, phrase_response.phrase_callback)
 
 def svn_update(bot, data):
     """
@@ -125,9 +128,6 @@ def svn_update(bot, data):
     """
     if (data["from"] in bot.input.owners):
         os.system("svn update")
-
-
-
 
 # Main function
 def main(server, nick, channels, name):

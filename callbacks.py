@@ -1,24 +1,9 @@
 # Callbacks
-
 import wiki
 import search
 import twitter
 import random
 from datetime import datetime
-
-def umad(bot, data):
-    """
-    When asked about problems, bot questions sainity
-    """
-    bot.send("U mad?!?!?",channel=data["to"])
-
-
-def friday(bot, data):
-    """
-    What we sing on Fridays
-    """
-    bot.send("Friday, friday, gotta get down on Friday!", channel=data["to"])
-
 
 def goofed(bot, data):
     """
@@ -102,6 +87,8 @@ def moo(bot, data):
     bot.send(" / |     ||",channel=data["to"])
     bot.send("*  ||----||",channel=data["to"])
     bot.send("   ~~    ~~",channel=data["to"])
+
+
     
 def websearch(bot, data):
     """
@@ -174,6 +161,45 @@ def sventek(bot, data):
     """
     bot.send(sventekQuotes[int(random.random() * len(sventekQuotes))], channel = data["to"])
 
+class Phrase_Response():
+    """
+    Class to hold information for a phrase response 
+    """
+
+    def __init__(self,  phrase, text_response):
+        self.phrase = phrase
+        self.text_response = text_response
+
+    def phrase_callback(self, bot, data):
+        """
+        responds appropriately with registered response (response may not be appropriate)  
+        """
+        bot.send(self.text_response ,channel=data["to"])
+
+def register_text_response(bot, data):
+    """
+    Register a text response to a given phrase
+    First word is the phrase, the rest of the sentance is the text response
+    for instance \t
+    !register canard is cool
+    has the bot respond to !canard with is cool
+    """
+    message = data["message"].split()
+    if len(message) >= 3:
+        phrase = message[1]
+        response = "".join(["%s " %m for m in message[2:]])
+        phrase_response = Phrase_Response(phrase, response)
+        bot.register("!%s" %phrase,
+                     phrase_response.phrase_callback)
+        bot.send("New response registered" ,
+                 channel=data["to"])
+    else:
+        bot.send("Could not register function" ,
+                 channel=data["to"])
+
+
+text_response_list = [("(f|F)riday" ,"Friday, friday, gotta get down on Friday!"),
+                                  ("(p|P)roblem", "U mad?!?!?")]
 
 callback_list = [("!wiki \w+", wikisearch),
                  ("!slap \w", slap),
