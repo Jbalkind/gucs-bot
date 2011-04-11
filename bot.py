@@ -93,8 +93,9 @@ def force_reload(bot,data):
     	try:
             reload(callbacks)
             load_callbacks(bot)
+            bot.send("Callbacks reloaded", channel = data["from"])
     	except:
-    		bot.send("There was an error in callbacks.py, callbacks were not reloaded.", channel = data["to"])
+    		bot.send("There was an error in callbacks.py, callbacks were not reloaded.", channel = data["from"])
 
 
 def help_user(bot, data):
@@ -128,6 +129,9 @@ def svn_update(bot, data):
     """
     if (data["from"] in bot.input.owners):
         os.system("svn update")
+    bot.send("SVN updated", channel = data["from"])
+    force_reload(bot,data)
+
 
 # Main function
 def main(server, nick, channels, name):

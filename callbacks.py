@@ -209,10 +209,8 @@ callback_list = [("!wiki \w+", wikisearch),
                  ("!twitter \w+", twittersearch),
                  ("!shutup", sleep_time),
                  ("!?(S|s)ventek!?", sventek),
-		 (".*(f|F)act.*", fact),
-		 (".*(f|F)riday.*", friday),
                  ("(u|U) (dun|done) (goofed|goof'd|goofd)", goofed),
-                 ("((Y|y)ou have )?(p|P)roblem\?", umad)
+                 ("!register", register_text_response)
                  ]
 
                  # ("(m|M)eow", meow),
