@@ -225,12 +225,20 @@ def register_text_response(bot, data):
                  channel=data["to"])
 
 
-
+#This list stores patterns and an associated text response. These are
+#loaded by the bot on startup or on !update
 text_response_list = [(".*(f|F)riday.*" ,"Friday, Friday, gotta get down on Friday!"),
                                   ("((Y|y)ou have )?(p|P)roblem\?", "u mad?"),
                                   ("(f|F)act", "slaps back of hand on opposite palm")]
 
+<<<<<<< .mine
+#This list stores functions in this file and an associated
+#pattern. These are the functions typically loaded by the bot on
+#startup or on an !update. 
+callback_list = [("!wiki \w+", wikisearch),
+=======
 callback_list = [("(!|@) wiki \w+", wikisearch),
+>>>>>>> .r80
                  ("!slap \w", slap),
                  ("!seen \w", seen),
                  ("(!|@)search \w+", websearch),
@@ -242,5 +250,3 @@ callback_list = [("(!|@) wiki \w+", wikisearch),
                  ("!unregister",unregister_text_response)
                  ]
 
-                 # ("(m|M)eow", meow),
-                 # ("(m|M)ooo*", moo),
