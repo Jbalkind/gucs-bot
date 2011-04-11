@@ -144,7 +144,12 @@ def twittersearch(bot, data):
         bot.send("* %s: %s" % (result[0], result[1]),
                  channel=data["to"])
     
-        
+
+def meow(bot, data):
+    bot.send("  /\\_/\\")
+    bot.send(" ( o.o )    meow!")
+    bot.send("  > ^ <")
+    
 callback_list = [("(p|P)roblem\?", umad),
                  ("(f|F)riday", friday),
                  ("(u|U) (dun|done) (goofed|goof'd|goofd)", goofed),
@@ -154,6 +159,8 @@ callback_list = [("(p|P)roblem\?", umad),
                  ("(m|M)ooo*", moo),
                  ("!search \w+", websearch),
                  ("!twitter \w+", twittersearch),
-                 ("!shutup", sleep_time)]
+                 ("!shutup", sleep_time),
+                 ("(m|M)eow", meow)
+                 ]
 
 
