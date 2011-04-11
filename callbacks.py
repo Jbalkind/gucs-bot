@@ -26,6 +26,13 @@ def goofed(bot, data):
     """
     bot.send("Sorry, %s" % data["from"], channel=data["to"])
 
+def fact(bot, data):
+    """
+    The "fact" motion is expressed
+    """
+    print data["to"]
+    bot.me("slaps back of hand on opposite palm", ""),
+           channel = data["to"])
 
 def wikisearch(bot, data):
     """
@@ -175,7 +182,8 @@ callback_list = [("!wiki \w+", wikisearch),
                  ("!search \w+", websearch),
                  ("!twitter \w+", twittersearch),
                  ("!shutup", sleep_time),
-                 ("!?(S|s)ventek!?", sventek)
+                 ("!?(S|s)ventek!?", sventek),
+		 (".fact.", fact)
                  ]
 
                  # ("(m|M)eow", meow),
