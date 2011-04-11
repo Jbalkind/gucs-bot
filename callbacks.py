@@ -3,6 +3,7 @@
 import wiki
 import search
 import twitter
+import random
 from datetime import datetime
 
 def umad(bot, data):
