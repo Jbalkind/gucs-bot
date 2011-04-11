@@ -6,7 +6,7 @@ class Input(threading.Thread):
     def __init__(self, irc):
         threading.Thread.__init__(self)
         self.irc = irc
-        self.owners = ["Happy0", "Canard", "JamesMc", "Euan", "Finde"]
+        self.owners = ["Happy0", "canard", "JamesMc", "euan", "Finde"]
         self.observers = []
         
     """ Handles an privmsg commands """
