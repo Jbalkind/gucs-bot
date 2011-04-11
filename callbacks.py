@@ -31,8 +31,7 @@ def fact(bot, data):
     The "fact" motion is expressed
     """
     print data["to"]
-    bot.me("slaps back of hand on opposite palm", ""),
-           channel = data["to"])
+    bot.me("slaps back of hand on opposite palm", channel = data["to"])
 
 def wikisearch(bot, data):
     """
