@@ -186,7 +186,7 @@ callback_list = [("!wiki \w+", wikisearch),
                  ]
 
                  # ("(m|M)eow", meow),
-                 # ("(p|P)roblem\?", umad),
+                 ("(p|P)roblem\?", umad),
                  # ("(f|F)riday", friday),
                  # ("(u|U) (dun|done) (goofed|goof'd|goofd)", goofed),
                  # ("(m|M)ooo*", moo),
