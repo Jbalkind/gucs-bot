@@ -5,6 +5,8 @@ import twitter
 import random
 from datetime import datetime
 
+phrase_response_dict = {}
+
 def goofed(bot, data):
     """
     We all make mistakes
@@ -170,6 +172,19 @@ class Phrase_Response():
         """
         bot.send(self.text_response ,channel=data["to"])
 
+def unregister_text_response(bot,data):
+    """
+    Unregister a text response to a phrase, syntax \t
+    !unregister phrase
+    """
+    global phrase_response_dict
+    message = data["message"].split()
+    if len(message) >=2:
+        phrase = message[1]
+        if phrase in phrase_response_dict:
+            phrase_response = phrase_response_dict.pop(phrase)
+            bot.unregister("!%s"%phrase)
+            
 def register_text_response(bot, data):
     """
     Register a text response to a given phrase
@@ -178,6 +193,7 @@ def register_text_response(bot, data):
     !register canard is cool
     has the bot respond to !canard with is cool
     """
+    global phrase_response_dict
     message = data["message"].split()
     if len(message) >= 3:
         phrase = message[1]
@@ -185,11 +201,13 @@ def register_text_response(bot, data):
         phrase_response = Phrase_Response(phrase, response)
         bot.register("!%s" %phrase,
                      phrase_response.phrase_callback)
+        phrase_response_dict[phrase] = phrase_response
         bot.send("New response registered" ,
                  channel=data["to"])
     else:
         bot.send("Could not register function" ,
                  channel=data["to"])
+
 
 
 text_response_list = [(".*(f|F)riday.*" ,"Friday, Friday, gotta get down on Friday!"),
@@ -204,7 +222,8 @@ callback_list = [("!wiki \w+", wikisearch),
                  ("!shutup", sleep_time),
                  ("!?(S|s)ventek!?", sventek),
                  ("(u|U) (dun|done) (goofed|goof'd|goofd)", goofed),
-                 ("!register", register_text_response)
+                 ("!register", register_text_response),
+                 ("!unregister",unregister_text_response)
                  ]
 
                  # ("(m|M)eow", meow),

@@ -68,6 +68,12 @@ class Bot(Observer):
         """
         self.callbacks[pattern] = callback
         
+    def unregister(self, pattern):
+        """
+        Unregister a function
+        """
+        self.callbacks.pop(pattern)
+
     def send(self, msg, channel=""):
         """
         Sends a message to specified channel.
