@@ -9,7 +9,7 @@ def umad(bot, data):
     """
     When asked about problems, bot questions sainity
     """
-    bot.send("U mad?!?!?",)
+    bot.send("U mad?!?!?",channel=data["to"])
 
 
 def friday(bot, data):
