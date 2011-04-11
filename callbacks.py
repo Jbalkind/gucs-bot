@@ -243,5 +243,5 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("(u|U) (dun|done) (goofed|goof'd|goofd)", goofed),
                  ("!register", register_text_response),
                  ("!unregister",unregister_text_response),
-                 ("(f|F)act", fact)]
+                 (" .*(f|F)act.*", fact)]
 
