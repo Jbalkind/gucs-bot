@@ -153,6 +153,7 @@ sventekQuotes = [
     "I am God. You do not change my headers!",
     "If you include a .c file, I will shoot you!",
     "I got a call from an old friend who offered me a job at a startup called Sun. I said no thanks, because I had a mortgate to pay off."
+    "Heaps are the best thing since sliced bread."
 ]
 
 def sventek(bot, data):
