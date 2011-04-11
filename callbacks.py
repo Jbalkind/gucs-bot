@@ -15,22 +15,28 @@ def goofed(bot, data):
 
 def wikisearch(bot, data):
     """
-    Search wikipedia for a term
+    Search wikipedia for a term. @sends result to channel, !sends result in a personal message
     """
-    query = data["message"].replace("!wiki ", "")
+    if data["message"][0] == "!":
+        query = data["message"].replace("!wiki ", "")
+        destination = "from"
+    else: 
+        query = data["message"].replace("@wiki ", "")
+        destination = "to"
+    
     results = wiki.wikiSearch(query)
 
     if (results == []):
         bot.send("No wikipedia results for \"%s\"" % query,
-                 channel = data["to"])
+                 channel = data[destination])
         return
 
     bot.send("Wikipedia results for \"%s\":" % query,
-             channel = data["to"])
+             channel = data[destination])
 
     for result in results:
         bot.send("* %s: %s" % (result[0], result[1]),
-                 channel=data["to"])
+                 channel=data[destination])
 
 
 def slap(bot, data):
@@ -87,43 +93,53 @@ def moo(bot, data):
     
 def websearch(bot, data):
     """
-    Search the web for a query
+    Search the web for a query. use @ to send result to channel, and ! to receive as personal message
     """
-    query = data["message"].replace("!search ", "")
+    if data["message"][0] == "!":
+        query = data["message"].replace("!search ", "")
+        destination = "from"
+    else: 
+        query = data["message"].replace("@search ", "")
+        destination = "to"
     
     try:
         results = search.search(query)
     except URLError:
-        bot.send("Sorry, I dun goofed",channel=data["to"])
+        bot.send("Sorry, I dun goofed",channel=data[destination])
         return
     
     if (results == []):
         bot.send("No search results for \"%s\"" % query,
-                 channel=data["to"])
+                 channel=data[destination])
         return
     
-    bot.send("Web results for \"%s\":" % query,channel=data["to"])
+    bot.send("Web results for \"%s\":" % query,channel=data[destination])
     
     for result in results:
-        bot.send("* %s: %s" % (result[0], result[1]), channel=data["to"])
+        bot.send("* %s: %s" % (result[0], result[1]), channel=data[destination])
 
 
 def twittersearch(bot, data):
     """
     Search twitter feeds for a term
     """
-    query = data["message"].replace("!twitter ", "")
+    if data["message"][0] == "!":
+        query = data["message"].replace("!twitter ", "")
+        destination = "from"
+    else: 
+        query = data["message"].replace("@twitter ", "")
+        destination = "to"
     
     try:
         results = twitter.search(query)
     except:
         bot.send("err... something happened, that wasn't meant to",
-                 channel=data["to"])
+                 channel=data[destination])
         return
 
     if (results == []):
         bot.send("No twitter search results for \"%s\"" % query,
-                 channel=data["to"])
+                 channel=data[destination])
         return
 
         bot.send("Twitter search results for \"%s\":" % query,
@@ -214,11 +230,11 @@ text_response_list = [(".*(f|F)riday.*" ,"Friday, Friday, gotta get down on Frid
                                   ("((Y|y)ou have )?(p|P)roblem\?", "u mad?"),
                                   ("(f|F)act", "slaps back of hand on opposite palm")]
 
-callback_list = [("!wiki \w+", wikisearch),
+callback_list = [("(!|@) wiki \w+", wikisearch),
                  ("!slap \w", slap),
                  ("!seen \w", seen),
-                 ("!search \w+", websearch),
-                 ("!twitter \w+", twittersearch),
+                 ("(!|@)search \w+", websearch),
+                 ("(!|@)twitter \w+", twittersearch),
                  ("!shutup", sleep_time),
                  ("!?(S|s)ventek!?", sventek),
                  ("(u|U) (dun|done) (goofed|goof'd|goofd)", goofed),
