@@ -146,10 +146,28 @@ def twittersearch(bot, data):
     
 
 def meow(bot, data):
+    """
+    Bot sends a cute kitty
+    """
     bot.send("  /\\_/\\", channel=data["to"])
     bot.send(" ( o.o )    meow!", channel=data["to"])
     bot.send("  > ^ <", channel=data["to"])
-    
+
+sventekQuotes = [
+    "My momma didn't raise no fool!",
+    "A baseball bat is like a cricket bat, but round.",
+    "I am God. You do not change my headers!",
+    "If you include a .c file, I will shoot you!",
+    "I got a call from an old friend who offered me a job at a startup called Sun. I said no thanks, because I had a mortgate to pay off."
+]
+
+def sventek(bot, data):
+    """
+    Bot delivers a line from the great man himself.
+    """
+    bot.send(sventekQuotes[int(random.random() * len(sventekQuotes))], channel = data["to"])
+
+
 callback_list = [("(p|P)roblem\?", umad),
                  ("(f|F)riday", friday),
                  ("(u|U) (dun|done) (goofed|goof'd|goofd)", goofed),
@@ -160,7 +178,8 @@ callback_list = [("(p|P)roblem\?", umad),
                  ("!search \w+", websearch),
                  ("!twitter \w+", twittersearch),
                  ("!shutup", sleep_time),
-                 ("(m|M)eow", meow)
+                 ("(m|M)eow", meow),
+                 ("!?(S|s)ventek!?", sventek)
                  ]
 
 
