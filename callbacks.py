@@ -169,18 +169,17 @@ def sventek(bot, data):
     bot.send(sventekQuotes[int(random.random() * len(sventekQuotes))], channel = data["to"])
 
 
-callback_list = [("(p|P)roblem\?", umad),
-                 ("(f|F)riday", friday),
-                 ("(u|U) (dun|done) (goofed|goof'd|goofd)", goofed),
-                 ("!wiki \w+", wikisearch),
+callback_list = [("!wiki \w+", wikisearch),
                  ("!slap \w", slap),
                  ("!seen \w", seen),
-                 ("(m|M)ooo*", moo),
                  ("!search \w+", websearch),
                  ("!twitter \w+", twittersearch),
                  ("!shutup", sleep_time),
-                 ("(m|M)eow", meow),
                  ("!?(S|s)ventek!?", sventek)
                  ]
 
-
+                 # ("(m|M)eow", meow),
+                 # ("(p|P)roblem\?", umad),
+                 # ("(f|F)riday", friday),
+                 # ("(u|U) (dun|done) (goofed|goof'd|goofd)", goofed),
+                 # ("(m|M)ooo*", moo),
