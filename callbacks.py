@@ -183,10 +183,10 @@ callback_list = [("!wiki \w+", wikisearch),
                  ("!shutup", sleep_time),
                  ("!?(S|s)ventek!?", sventek),
 		 (".*fact.*", fact)
+                 ("(p|P)roblem\?", umad)
                  ]
 
                  # ("(m|M)eow", meow),
-                 ("(p|P)roblem\?", umad),
                  # ("(f|F)riday", friday),
                  # ("(u|U) (dun|done) (goofed|goof'd|goofd)", goofed),
                  # ("(m|M)ooo*", moo),
