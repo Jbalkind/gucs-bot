@@ -225,7 +225,7 @@ def register_text_response(bot, data):
                  channel=data["to"])
 
 def fact(bot, data):
-    bot.me("Slaps palm of hand with back of other hand in approval.", data["from"])
+    bot.me("Slaps palm of hand with back of other hand in approval.", data["to"])
     
 
 #This list stores patterns and an associated text response. These are
