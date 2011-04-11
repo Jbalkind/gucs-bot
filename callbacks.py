@@ -11,13 +11,6 @@ def goofed(bot, data):
     """
     bot.send("Sorry, %s" % data["from"], channel=data["to"])
 
-def fact(bot, data):
-    """
-    The "fact" motion is expressed
-    """
-    print data["to"]
-    bot.me("slaps back of hand on opposite palm", channel = data["to"])
-
 def wikisearch(bot, data):
     """
     Search wikipedia for a term
@@ -200,7 +193,8 @@ def register_text_response(bot, data):
 
 
 text_response_list = [(".*(f|F)riday.*" ,"Friday, Friday, gotta get down on Friday!"),
-                                  ("((Y|y)ou have )?(p|P)roblem\?", "u mad?")]
+                                  ("((Y|y)ou have )?(p|P)roblem\?", "u mad?"),
+                                  ("(f|F)act", "slaps back of hand on opposite palm")]
 
 callback_list = [("!wiki \w+", wikisearch),
                  ("!slap \w", slap),
