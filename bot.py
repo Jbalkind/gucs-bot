@@ -129,8 +129,8 @@ def svn_update(bot, data):
     """
     if (data["from"] in bot.input.owners):
         os.system("svn update")
-    bot.send("SVN updated", channel = data["from"])
-    force_reload(bot,data)
+        bot.send("SVN updated", channel = data["from"])
+        force_reload(bot,data)
 
 
 # Main function
