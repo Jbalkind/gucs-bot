@@ -93,7 +93,7 @@ def force_reload(bot,data):
             reload(callbacks)
             load_callbacks(bot)
     	except:
-    		bot.send("There was an error in callbacks.py, callbacks were not reloaded.")
+    		bot.send("There was an error in callbacks.py, callbacks were not reloaded.", channel = data["to"])
 
 
 def help_user(bot, data):
