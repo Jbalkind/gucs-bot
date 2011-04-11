@@ -198,8 +198,8 @@ def register_text_response(bot, data):
                  channel=data["to"])
 
 
-text_response_list = [("(f|F)riday" ,"Friday, friday, gotta get down on Friday!"),
-                                  ("(p|P)roblem", "U mad?!?!?")]
+text_response_list = [(".*(f|F)riday.*" ,"Friday, Friday, gotta get down on Friday!"),
+                                  ("((Y|y)ou have )?(p|P)roblem\?", "u mad?")]
 
 callback_list = [("!wiki \w+", wikisearch),
                  ("!slap \w", slap),
@@ -211,7 +211,7 @@ callback_list = [("!wiki \w+", wikisearch),
 		 (".*(f|F)act.*", fact),
 		 (".*(f|F)riday.*", friday),
                  ("(u|U) (dun|done) (goofed|goof'd|goofd)", goofed),
-                 ("(p|P)roblem\?", umad)
+                 ("((Y|y)ou have )?(p|P)roblem\?", umad)
                  ]
 
                  # ("(m|M)eow", meow),
