@@ -231,14 +231,7 @@ text_response_list = [(".*(f|F)riday.*" ,"Friday, Friday, gotta get down on Frid
                                   ("((Y|y)ou have )?(p|P)roblem\?", "u mad?"),
                                   ("(f|F)act", "slaps back of hand on opposite palm")]
 
-<<<<<<< .mine
-#This list stores functions in this file and an associated
-#pattern. These are the functions typically loaded by the bot on
-#startup or on an !update. 
-callback_list = [("!wiki \w+", wikisearch),
-=======
-callback_list = [("(!|@) wiki \w+", wikisearch),
->>>>>>> .r80
+callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("!slap \w", slap),
                  ("!seen \w", seen),
                  ("(!|@)search \w+", websearch),
