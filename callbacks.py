@@ -3,6 +3,7 @@ import wiki
 import search
 import twitter
 import random
+import lastfm
 from datetime import datetime
 
 phrase_response_dict = {}
@@ -226,6 +227,17 @@ def register_text_response(bot, data):
 
 def fact(bot, data):
     bot.me("Slaps palm of hand with back of other hand in approval.", data["to"])
+
+def last(bot, data):
+    user = data["message"].replace("!last","")
+    
+    playing = lastfm.nowplaying(user)
+
+    if playing == []:
+        bot.send("No result found", data["to"])
+    else:
+        bot.send("Last.fm user %s is Now Playing: %s - %s", user, data[0][0], data[0][1])
+                            
     
 
 #This list stores patterns and an associated text response. These are
@@ -243,5 +255,6 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("(u|U) (dun|done) (goofed|goof'd|goofd)", goofed),
                  ("!register", register_text_response),
                  ("!unregister",unregister_text_response),
-                 (" .*(f|F)act.*", fact)]
+                 (" .*(f|F)act.*", fact),
+                 ("!last \w", last)]
 
