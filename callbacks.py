@@ -247,8 +247,8 @@ def last(bot, data):
 
 #This list stores patterns and an associated text response. These are
 #loaded by the bot on startup or on !update
-text_response_list = [(".*(f|F)riday.*" ,"Friday, Friday, gotta get down on Friday!"),
-                                  ("((Y|y)ou have )?(p|P)roblem\?", "u mad?"), (".*(w|W)hat is bulk type?.*", "12.45")]
+text_response_list = [(".*(f|F)riday.*" ,"Friday, Friday, gotta get down on Friday!"), ("((Y|y)ou have )?(p|P)roblem\?", "u mad?"), (".*(w|W)hat is bulk type?.*", "12.45"),
+                      (".*(a|A)mirite?.*", "urrite!")]
 
 callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("!slap \w", slap),
