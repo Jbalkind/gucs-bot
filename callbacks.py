@@ -236,7 +236,7 @@ def last(bot, data):
     if playing == []:
         bot.send("No result found", data["to"])
     else:
-        for result in results:
+        for result in playing:
             bot.send("" + user + " is Now Playing: " + result[0] + " - " + result[1] + "", data["to"])
                             
     
