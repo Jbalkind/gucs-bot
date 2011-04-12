@@ -13,18 +13,21 @@ def search(query, limit=5):
     url = "http://boss.yahooapis.com/ysearch/web/v1/" \
         + "{0}?appid={1}&format=json&style=raw&count={2}" \
         .format(urllib2.quote(query), YAHOO_API_KEY, limit)
-    
-    handle = urllib2.urlopen(url)
-    
-    # Decode the JSON result
-    result = ""
 
-    for line in handle:
-        result += line
+    try:
+        handle = urllib2.urlopen(url)
+        
+        # Decode the JSON result
+        result = ""
 
-    handle.close()
+        for line in handle:
+            result += line
 
-    decoded = json.loads(result)
+        handle.close()
+
+        decoded = json.loads(result)
+    except:
+        print "url error"
 
     return parse(decoded)
 
