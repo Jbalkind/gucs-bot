@@ -229,7 +229,7 @@ def fact(bot, data):
     bot.me("Slaps palm of hand with back of other hand in approval.", data["to"])
 
 def last(bot, data):
-    user = data["message"].replace("!last","")
+    user = data["message"].replace("!last ","")
     
     playing = lastfm.nowplaying(user)
 
