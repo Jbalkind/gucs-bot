@@ -236,7 +236,8 @@ def last(bot, data):
     if playing == []:
         bot.send("No result found", data["to"])
     else:
-        bot.send("Last.fm user %s is Now Playing: %s - %s", user, data[0][0], data[0][1])
+        for result in results:
+            bot.send("" + user + " is Now Playing: " + result[0] + " - " + result[1] + "", data["to"])
                             
     
 
