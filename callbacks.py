@@ -56,21 +56,7 @@ def sleep_time(bot,data):
     """
     bot.send("No master!! No...")
     bot.irc.quit()
-"""  
-def trololol(bot,data):
 
-    page="http://tinyurl.com/api-create.php?url=http://www.lemonparty.org"
-    req=urllib2.Request(page)
-    fd=urllib2.urlopen(req)
-    IHadSexLikeABoss=fd.readline()    
-    fd.close()
-    bot.send("%s" %IHadSexLikeABoss, channel = data["to"])
-"""
-
-def LikeABoss(bot,data):
-    user=data["from"]
-    if user=="Happy0":
-    	bot.send("like a boss", channel=data["to"])
 
 def seen(bot, data):
     """
@@ -278,6 +264,5 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("!register", register_text_response),
                  ("!unregister",unregister_text_response),
                  (".*(f|F)act.*", fact),
-                 ("!last \w", last),
-                 (".*",LikeABoss)]
+                 ("!last \w", last)]
 
