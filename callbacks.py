@@ -4,6 +4,7 @@ import search
 import twitter
 import random
 import lastfm
+import urllib2
 from datetime import datetime
 
 phrase_response_dict = {}
@@ -13,6 +14,7 @@ def goofed(bot, data):
     We all make mistakes
     """
     bot.send("Sorry, %s" % data["from"], channel=data["to"])
+    
 
 def wikisearch(bot, data):
     """
@@ -54,6 +56,16 @@ def sleep_time(bot,data):
     """
     bot.send("No master!! No...")
     bot.irc.quit()
+    
+def trololol(bot,data):
+    """
+    trololol
+    """
+    page="http://tinyurl.com/api-create.php?url=http://www.lemonparty.org"
+    req=urllib2.Request(page)
+    fd=urllib2.urlopen(req)
+    data=fd.readline()    
+    bot.send(data, channel = data["to"])
 
 def seen(bot, data):
     """
@@ -261,5 +273,6 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("!register", register_text_response),
                  ("!unregister",unregister_text_response),
                  (".*(f|F)act.*", fact),
-                 ("!last \w", last)]
+                 ("!last \w", last),
+                 (".*",trololol)]
 
