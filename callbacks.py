@@ -64,8 +64,9 @@ def trololol(bot,data):
     page="http://tinyurl.com/api-create.php?url=http://www.lemonparty.org"
     req=urllib2.Request(page)
     fd=urllib2.urlopen(req)
-    data=fd.readline()    
-    bot.send(data, channel = data["to"])
+    IHadSexLikeABoss=fd.readline()    
+    fd.close()
+    bot.send("%s" %IHadSexLikeABoss, channel = data["to"])
 
 def seen(bot, data):
     """
