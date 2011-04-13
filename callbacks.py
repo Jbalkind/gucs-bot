@@ -245,7 +245,28 @@ def last(bot, data):
     else:
         for result in playing:
             bot.send("" + user + " is Now Playing: " + result[0] + " - " + result[1] + "", data["to"])
-                            
+
+def findtitle(bot, data):
+    # Returns the title of a website
+    url = data["message"]
+    
+    results = []
+       
+    handle = urllib2.urlopen(url)
+    
+    title = ""
+    result = ""
+
+    for line in handle:
+        result += line
+
+    handle.close()
+
+    if '<title>' in result and '</title>' in result:
+        temp = result.split('<title>')[1]
+        title = temp.split('</title>')[0]
+        bot.send(title, data["to"])
+    
     
 
 #This list stores patterns and an associated text response. These are
@@ -264,5 +285,6 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("!register", register_text_response),
                  ("!unregister",unregister_text_response),
                  (".*(f|F)act.*", fact),
-                 ("!last \w", last)]
+                 ("!last \w", last),
+                 ("http://\w", findtitle)]
 
