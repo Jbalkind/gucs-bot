@@ -273,6 +273,5 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("!register", register_text_response),
                  ("!unregister",unregister_text_response),
                  (".*(f|F)act.*", fact),
-                 ("!last \w", last)""",
-                 (".*",trololol)"""]
+                 ("!last \w", last)]
 
