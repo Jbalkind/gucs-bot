@@ -265,7 +265,7 @@ def findtitle(bot, data):
     if '<title>' in result and '</title>' in result:
         temp = result.split('<title>')[1]
         title = temp.split('</title>')[0]
-        bot.send(title, data["to"])
+        bot.send(title.replace("\n", ""), data["to"])
     
     
 
