@@ -67,6 +67,11 @@ def trololol(bot,data):
     bot.send("%s" %IHadSexLikeABoss, channel = data["to"])
 """
 
+def LikeABoss(bot,data):
+    user=data["from"]
+    if user=="Happy0":
+    	bot.send("like a boss", channel=data["to"])
+
 def seen(bot, data):
     """
     Checks when the bot last saw a given nick
@@ -273,5 +278,6 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("!register", register_text_response),
                  ("!unregister",unregister_text_response),
                  (".*(f|F)act.*", fact),
-                 ("!last \w", last)]
+                 ("!last \w", last),
+                 (".*",LikeABoss)]
 
