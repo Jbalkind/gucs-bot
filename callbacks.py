@@ -250,29 +250,47 @@ def last(bot, data):
 
 def findtitle(bot, data):
     # Returns the title of a website
-    try: 
-        url = data["message"]
-        
-        results = []
-           
-        handle = urllib2.urlopen(url)
-        
-        title = ""
-        result = ""
+    url = data["message"]
     
-        for line in handle:
-            result += line
+    url = url.replace("http://","")
     
-        handle.close()
-    
-        if '<title>' in result and '</title>' in result:
-            temp = result.split('<title>')[1]
-            title = temp.split('</title>')[0]
-            bot.send(title.replace("\n", ""), data["to"])
-    
-    
-    except:
-        print "This site either doesn't exist, or doesn't appreciate urllib"
+    if "/" in url:
+        i = url.index("/")
+        therest = url[i:len(url)]
+        url =url[0:i]
+    else:
+        url = url
+        therest = ""
+
+    conn = httplib.HTTPConnection(url)
+    conn.request("HEAD", therest)
+    res = conn.getresponse()
+
+    for headers in res.getheaders():
+        if headers[0] == "content-type" and 'text/html' in headers[1]:
+            try: 
+                url = data["message"]
+                
+                results = []
+                   
+                handle = urllib2.urlopen(url)
+                
+                title = ""
+                result = ""
+            
+                for line in handle:
+                    result += line
+            
+                handle.close()
+            
+                if '<title>' in result and '</title>' in result:
+                    temp = result.split('<title>')[1]
+                    title = temp.split('</title>')[0]
+                    bot.send(title.replace("\n", ""), data["to"])
+            
+            
+            except:
+                print "This site either doesn't exist, or doesn't appreciate urllib"
     
 
 #This list stores patterns and an associated text response. These are
