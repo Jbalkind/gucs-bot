@@ -5,7 +5,9 @@ import twitter
 import random
 import lastfm
 import urllib2
+import httplib
 from datetime import datetime
+
 
 phrase_response_dict = {}
 
@@ -248,25 +250,29 @@ def last(bot, data):
 
 def findtitle(bot, data):
     # Returns the title of a website
-    url = data["message"]
+    try: 
+        url = data["message"]
+        
+        results = []
+           
+        handle = urllib2.urlopen(url)
+        
+        title = ""
+        result = ""
     
-    results = []
-       
-    handle = urllib2.urlopen(url)
+        for line in handle:
+            result += line
     
-    title = ""
-    result = ""
-
-    for line in handle:
-        result += line
-
-    handle.close()
-
-    if '<title>' in result and '</title>' in result:
-        temp = result.split('<title>')[1]
-        title = temp.split('</title>')[0]
-        bot.send(title.replace("\n", ""), data["to"])
+        handle.close()
     
+        if '<title>' in result and '</title>' in result:
+            temp = result.split('<title>')[1]
+            title = temp.split('</title>')[0]
+            bot.send(title.replace("\n", ""), data["to"])
+    
+    
+    except:
+        print "This site either doesn't exist, or doesn't appreciate urllib"
     
 
 #This list stores patterns and an associated text response. These are
