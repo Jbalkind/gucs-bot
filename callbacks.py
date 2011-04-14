@@ -248,25 +248,33 @@ def last(bot, data):
 
 def findtitle(bot, data):
     # Returns the title of a website
-    url = data["message"]
     
-    results = []
-       
-    handle = urllib2.urlopen(url)
+    try:
+        url = data["message"]
+        f = urllib2.urlopen(url)
+        
+        headers = f.urllib2.headers['Content-Type']
+        
+        
+        if "text/html" in headers:
+            results = [] 
+            handle = urllib2.urlopen(url)
+            
+            title = ""
+            result = ""
+        
+            for line in handle:
+                result += line
+        
+            handle.close()
+        
+            if '<title>' in result and '</title>' in result:
+                temp = result.split('<title>')[1]
+                title = temp.split('</title>')[0]
+                bot.send(title.replace("\n", ""), data["to"])
     
-    title = ""
-    result = ""
-
-    for line in handle:
-        result += line
-
-    handle.close()
-
-    if '<title>' in result and '</title>' in result:
-        temp = result.split('<title>')[1]
-        title = temp.split('</title>')[0]
-        bot.send(title.replace("\n", ""), data["to"])
-    
+    except:
+        print "Some URL error was probably thrown... Maybe this site doesn't care for urllib"
     
 
 #This list stores patterns and an associated text response. These are
