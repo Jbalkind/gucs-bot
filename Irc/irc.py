@@ -52,7 +52,7 @@ class Irc:
             raise NoInfoSet
 
         try:
-            self.socket.send("PRIVMSG %s :%s\r\n" % (channel, msg))
+            self.socket.send(u"PRIVMSG %s :%s\r\n" % (channel, msg))
         except:
             self.socket.send("PRIVMSG %s :%s\r\n" % (channel, "[an exception was raised]"))
         

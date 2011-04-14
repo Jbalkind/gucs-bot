@@ -20,8 +20,8 @@ def parse(decoded):
 
     theresults = []
     for result in decoded[u'results']:
-         user = result['from_user']
-         text = result['text']
+         user = result[u'from_user']
+         text = result[u'text']
          theresults += [(user, text)]
 
     return theresults         
