@@ -231,7 +231,7 @@ def register_text_response(bot, data):
                  channel=data["to"])
 
 def fact(bot, data):
-    bot.me("slaps back of hand on palm of other hand in approval.", data["to"])
+    bot.me("smacks back of hand on palm of other hand in approval.", data["to"])
 
 def last(bot, data):
     """
