@@ -59,6 +59,7 @@ class Bot(Observer):
         for pattern in self.callbacks.keys():
             if re.match(pattern, data["message"]) != None:
                 
+                # This makes the bot respond directly to personal messages
                 if data["to"] == self.nick:
                     data["to"] = data["from"]
                 
