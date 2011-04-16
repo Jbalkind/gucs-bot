@@ -16,7 +16,7 @@ def calefnick(bot, data):
 	Calum has a lot of nicknames
 	"""
 	random.seed()
-	bot.send("%s" % random.randint(0,len(calef_nicks)-1), channel=data["to"])
+	bot.send("%s" % calef_nicks[random.randint(0,len(calef_nicks)-1)], channel=data["to"])
 
 def goofed(bot, data):
     """
