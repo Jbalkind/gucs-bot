@@ -36,7 +36,6 @@ def nowplaying(user):
 
 def getsimilar(artist):
     # Returns similar artists, to a given artist
-    print "artist"
     
     try:
         api_key = open('lastapi.txt', 'r').read()
