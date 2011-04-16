@@ -8,8 +8,15 @@ import urllib2
 import httplib
 from datetime import datetime
 
-
+calef_nicks = ["calef37", "scarface", "cow hoof", "cow calf"]
 phrase_response_dict = {}
+
+def calefnick(bot, data):
+	"""
+	Calum has a lot of nicknames
+	"""
+	random.seed()
+	bot.send("%s" % random.randint(0,len(calef_nicks)-1), channel=data["to"])
 
 def goofed(bot, data):
     """
@@ -330,5 +337,6 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
                  (".*(f|F)act.*", fact),
                  ("!last \w", last),
                  ("!similar \w+", similar_artists),
-                 ("http://\w", findtitle)]
+                 ("http://\w", findtitle),
+				 ("calef13\.randnick\(\)", calefnick)]
 
