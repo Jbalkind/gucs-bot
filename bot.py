@@ -56,6 +56,10 @@ class Bot(Observer):
         """
         for pattern in self.callbacks.keys():
             if re.match(pattern, data["message"]) != None:
+                
+                if data["to"] == self.nick:
+                    data["to"] == data["from"]
+                
                 self.callbacks[pattern](self, data)
                 break
 
