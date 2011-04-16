@@ -23,6 +23,8 @@ class Bot(Observer):
     """
 
     def __init__(self, server, channels, nick, name):
+        self.nick = nick
+        
         self.irc = Irc()
         self.irc.connect(server)
         self.irc.set_info(nick, nick)
