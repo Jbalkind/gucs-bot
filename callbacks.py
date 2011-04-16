@@ -248,6 +248,25 @@ def last(bot, data):
         for result in playing:
             bot.send("" + user + " is Now Playing: " + result[0] + " - " + result[1] + "", data["to"])
 
+def similar_artists(bot,data):
+    """
+    Returns similar artists to specified artist using last.fm's suggestions
+    """
+    
+    artist = data["message"].replace("!similar ", "")
+    
+    similar = lastfm.getsimilar(artist)
+    
+    if similar == []:
+        bot.send("No results found", data["to"])
+    else:
+        results = ""
+        for result in similar:
+            results += result + ", "
+            
+        bot.send("Similar artists: " + results, data["to"])
+
+
 def findtitle(bot, data):
     # Returns the title of a website
     url = data["message"]
@@ -310,5 +329,6 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("!unregister",unregister_text_response),
                  (".*(f|F)act.*", fact),
                  ("!last \w", last),
+                 ("!simiar \w", similar_artists)
                  ("http://\w", findtitle)]
 
