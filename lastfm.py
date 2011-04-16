@@ -46,7 +46,7 @@ def getsimilar(artist):
     results = []
     
     try:    
-        dom = getresults(url)
+        dom = getresults(urllib2.quote(url))
         for result in dom.getElementsByTagName("artist"):
             artist = result.getElementsByTagName("name")[0].childNodes[0].nodeValue
             results += [(artist)]    
