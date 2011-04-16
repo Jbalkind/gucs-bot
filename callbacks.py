@@ -329,6 +329,6 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("!unregister",unregister_text_response),
                  (".*(f|F)act.*", fact),
                  ("!last \w", last),
-                 ("!simiar \w", similar_artists)
+                 ("!simiar \w", similar_artists),
                  ("http://\w", findtitle)]
 
