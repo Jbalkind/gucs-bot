@@ -36,6 +36,8 @@ def nowplaying(user):
 
 def getsimilar(artist):
     # Returns similar artists, to a given artist
+    print "artist"
+    
     try:
         api_key = open('lastapi.txt', 'r').read()
     except:
@@ -73,7 +75,7 @@ def getresults(url):
 
 
 def main():
-    results= getsimilar("Boards of Canada")
+    results= getsimilar("A Sunny Day In Glasgow")
 
     for result in results:
         print result
