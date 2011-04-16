@@ -42,11 +42,11 @@ def getsimilar(artist):
         print "lastapi.txt file doesn't exit"
         return []
         
-    url = "http://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&artist=%s&limit=10&api_key=%s" %(artist,api_key)
+    url = "http://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&artist=%s&limit=10&api_key=%s" %(urllib2.quote(artist),api_key)
     results = []
     
     try:    
-        dom = getresults(urllib2.quote(url))
+        dom = getresults(url)
         for result in dom.getElementsByTagName("artist"):
             artist = result.getElementsByTagName("name")[0].childNodes[0].nodeValue
             results += [(artist)]    
