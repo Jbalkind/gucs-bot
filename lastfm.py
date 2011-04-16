@@ -73,7 +73,7 @@ def getresults(url):
 
 
 def main():
-    results= getsimilar("Tool")
+    results= getsimilar("Boards of Canada")
 
     for result in results:
         print result
