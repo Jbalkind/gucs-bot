@@ -8,7 +8,7 @@ import urllib2
 import httplib
 from datetime import datetime
 
-calef_nicks = ["calef37", "scarface", "cow hoof", "cow calf"]
+calef_nicks = ["calef37", "scarface", "cow hoof", "cow calf", "leatherback"]
 phrase_response_dict = {}
 
 def calefnick(bot, data):
