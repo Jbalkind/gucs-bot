@@ -8,7 +8,7 @@ import urllib2
 import httplib
 from datetime import datetime
 
-calef_nicks = ["calef37", "scarface", "cow hoof", "cow calf", "leatherback"]
+calef_nicks = ["calef37", "scarface", "cow hoof", "cow calf", "leatherback", "The Samurai"]
 cur_boss = 0
 boss_phrases = ["TALK TO CORPORATE", "APPROVE MEMOS", "LEAD A WORKSHOP", "REMEMBER BIRTHDAYS", "DIRECT WORKFLOW", "MY OWN BATHROOM", "MICROMANAGE", "PROMOTE SYNERGY", "EAT A BAGEL", "HIT ON DEBRA", "GET REJECTED", "SWALLOW SADNESS", "SEND SOME FAXES", "CALL A SEXLINE", "CRY DEEPLY", "DEMAND A REFUND", "EAT A BAGEL", "HARASSMENT LAWSUIT", "NO PROMOTION", "FIFTH OF VODKA", "SHIT ON DEBRA'S DESK", "BUY A GUN", "IN MY MOUTH", "OH FUCK MAN CAN'T FUCKING DO IT SHIT!", "PUSSY OUT", "PUKE ON DEBRA'S DESK", "JUMP OUT THE WINDOW", "SUCK A DUDE'S DICK", "SCORE SOME COKE", "CRASH MY CAR", "SUCK MY OWN DICK", "EAT SOME CHICKEN STRIPS", "CHOP MY BALLS OFF", "BLACK OUT IN THE SEWER", "MEET A GIANT FISH", "FUCK ITS BRAINS OUT", "TURN INTO A JET", "BOMB THE RUSSIANS", "CRASH INTO THE SUN", "NOW I'M DEAD" ]
 phrase_response_dict = {}
