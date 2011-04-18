@@ -18,6 +18,9 @@ def calefnick(bot, data):
 	random.seed()
 	bot.send("%s" % calef_nicks[random.randint(0,len(calef_nicks)-1)], channel=data["to"])
 
+def god(bot,data):
+	bot.send("hello world", channel=data["to"])
+
 def goofed(bot, data):
     """
     We all make mistakes
@@ -338,5 +341,6 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("!last \w", last),
                  ("!similar \w+", similar_artists),
                  ("http://\w", findtitle),
-				 (".*calef13\.randnick\(\).*", calefnick)]
+		 ("!stuart", god),
+		 (".*calef13\.randnick\(\).*", calefnick)]
 
