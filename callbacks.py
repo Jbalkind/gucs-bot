@@ -9,6 +9,7 @@ import httplib
 from datetime import datetime
 
 calef_nicks = ["calef37", "scarface", "cow hoof", "cow calf", "leatherback"]
+cur_boss = 0
 boss_phrases = ["TALK TO CORPORATE", "APPROVE MEMOS", "LEAD A WORKSHOP", "REMEMBER BIRTHDAYS", "DIRECT WORKFLOW", "MY OWN BATHROOM", "MICROMANAGE", "PROMOTE SYNERGY", "EAT A BAGEL", "HIT ON DEBRA", "GET REJECTED", "SWALLOW SADNESS", "SEND SOME FAXES", "CALL A SEXLINE", "CRY DEEPLY", "DEMAND A REFUND", "EAT A BAGEL", "HARASSMENT LAWSUIT", "NO PROMOTION", "FIFTH OF VODKA", "SHIT ON DEBRA'S DESK", "BUY A GUN", "IN MY MOUTH", "OH FUCK MAN CAN'T FUCKING DO IT SHIT!", "PUSSY OUT", "PUKE ON DEBRA'S DESK", "JUMP OUT THE WINDOW", "SUCK A DUDE'S DICK", "SCORE SOME COKE", "CRASH MY CAR", "SUCK MY OWN DICK", "EAT SOME CHICKEN STRIPS", "CHOP MY BALLS OFF", "BLACK OUT IN THE SEWER", "MEET A GIANT FISH", "FUCK ITS BRAINS OUT", "TURN INTO A JET", "BOMB THE RUSSIANS", "CRASH INTO THE SUN", "NOW I'M DEAD" ]
 phrase_response_dict = {}
 
@@ -22,6 +23,12 @@ def calefnick(bot, data):
 def boss_rand(bot, data):
     random.seed()
     bot.send("%s" % boss_phrases[random.randint(0, len(boss_phrases)-1)], channel=data["to"])
+
+def boss_ord(bot, data):
+    if(cur_boss == len(boss_phrases)-1):
+        cur_boss = 0;
+
+    bot.send("%s" % boss_phrases[cur_boss], channel=data["to"])
 
 def god(bot,data):
 	bot.send("hello world", channel=data["to"])
@@ -348,5 +355,6 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("http://\w", findtitle),
 		 ("!stuart", god),
 		 (".*calef13\.randnick\(\).*", calefnick),
-         (".*LIKE A BOSS.*", boss_rand)]
+         (".*LIKE A BOSS.*", boss_rand),
+         (".*like a boss.*", boss_ord)]
 
