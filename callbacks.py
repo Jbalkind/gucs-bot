@@ -19,7 +19,7 @@ def calefnick(bot, data):
 	random.seed()
 	bot.send("%s" % calef_nicks[random.randint(0,len(calef_nicks)-1)], channel=data["to"])
 
-def boss_rand(bot, data)
+def boss_rand(bot, data):
     random.seed()
     bot.send("%s" % boss_phrases[random.randint(0, len(boss_phrases)-1)], channel=data["to"])
 
