@@ -25,6 +25,7 @@ def boss_rand(bot, data):
     bot.send("%s" % boss_phrases[random.randint(0, len(boss_phrases)-1)], channel=data["to"])
 
 def boss_ord(bot, data):
+    global cur_boss
     if(cur_boss == len(boss_phrases)-1):
         cur_boss = 0;
 
