@@ -347,6 +347,6 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("!similar \w+", similar_artists),
                  ("http://\w", findtitle),
 		 ("!stuart", god),
-		 (".*calef13\.randnick\(\).*", calefnick)
+		 (".*calef13\.randnick\(\).*", calefnick),
          (".*LIKE A BOSS.*", boss_rand)]
 
