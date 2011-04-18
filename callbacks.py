@@ -30,6 +30,7 @@ def boss_ord(bot, data):
         cur_boss = 0;
 
     bot.send("%s" % boss_phrases[cur_boss], channel=data["to"])
+    cur_boss += 1
 
 def god(bot,data):
 	bot.send("hello world", channel=data["to"])
