@@ -21,10 +21,16 @@ def calefnick(bot, data):
 	bot.send("%s" % calef_nicks[random.randint(0,len(calef_nicks)-1)], channel=data["to"])
 
 def boss_rand(bot, data):
+    """
+    Spit out a random lyric from 'like a boss'
+    """
     random.seed()
     bot.send("%s" % boss_phrases[random.randint(0, len(boss_phrases)-1)], channel=data["to"])
 
 def boss_ord(bot, data):
+    """
+    Spits out the lyrics from 'like a boss' in order, uses a global variable to keep track
+    """
     global cur_boss
     if(cur_boss == len(boss_phrases)-1):
         cur_boss = 0;
