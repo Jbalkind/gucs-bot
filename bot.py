@@ -113,11 +113,24 @@ def force_reload(bot,data):
 
 def help_user(bot, data):
     """
-    Help function for the bot
+    Help function for the bot. To get a list of all functions and what
+    they do type !help. For specific functions, type !help followed by
+    the function names
     """
-    bot.send("List of functions that this bot makes availible;",
+    message = data["message"].split()
+    functions = []
+    if len(message) >= 2:
+        print True
+        for help_item in message[1:]:
+            if help_item in bot.callbacks:
+                functions += [(help_item, bot.callbacks[help_item])]
+        else:
+            bot.send("No such function", channel=["from"])
+    else:
+        functions = bot.callbacks.items()
+        bot.send("List of functions that this bot makes availible;",
              channel=data["from"])
-    for callback, function in bot.callbacks.items():
+    for callback, function in functions:
         #Change newlines to spaces
         if function.__doc__ == None:
             help_string = "No help for this function"
