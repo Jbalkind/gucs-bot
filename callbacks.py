@@ -10,7 +10,7 @@ from datetime import datetime
 from threading import Condition
 
 calef_nicks = ["calef37", "scarface", "cow hoof", "cow calf", 
-	       "leatherback", "The Samurai"]
+	       "leatherback", "The Samurai", "Colin", "sits next to Heather", "has a bit of facial hair"]
 cur_boss = 0
 boss_phrases = ["TALK TO CORPORATE", "APPROVE MEMOS", "LEAD A WORKSHOP",
 		"REMEMBER BIRTHDAYS", "DIRECT WORKFLOW", "MY OWN BATHROOM", 
