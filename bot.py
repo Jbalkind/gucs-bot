@@ -73,7 +73,8 @@ class Bot(Observer):
         """
         Registers a callback for an input pattern.
         """
-        self.callbacks[pattern] = callback
+        if pattern not in callback:
+            self.callbacks[pattern] = callback
         
     def unregister(self, pattern):
         """

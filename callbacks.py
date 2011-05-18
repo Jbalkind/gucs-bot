@@ -66,7 +66,8 @@ def boss_rand(bot, data):
     Spit out a random lyric from 'like a boss'
     """
     random.seed()
-    bot.send("%s" % boss_phrases[random.randint(0, len(boss_phrases)-1)], channel=data["to"])
+    bot.send("%s" % boss_phrases[random.randint(0, len(boss_phrases)-1)], 
+             channel=data["to"])
 
 def boss_ord(bot, data):
     """
@@ -169,7 +170,8 @@ def moo(bot, data):
     
 def websearch(bot, data):
     """
-    Search the web for a query. use @ to send result to channel, and ! to receive as personal message
+    Search the web for a query. use @ to send result to channel, and 
+    ! to receive as personal message
     """
     if data["message"][0] == "!":
 	query = data["message"].replace("!search ", "")
@@ -385,7 +387,9 @@ def findtitle(bot, data):
 
 #This list stores patterns and an associated text response. These are
 #loaded by the bot on startup or on !update
-text_response_list = [(".*(f|F)riday.*" ,"Friday, Friday, gotta get down on Friday!"), ("((Y|y)ou have )?(p|P)roblem\?", "u mad?"), (".*(w|W)hat is bulk type?.*", "12.45"),
+text_response_list = [(".*(f|F)riday.*" ,"Friday, Friday, gotta get down on Friday!"),
+                      ("((Y|y)ou have )?(p|P)roblem\?", "u mad?"), 
+                      (".*(w|W)hat is bulk type?.*", "12.45"),
 		      (".*(a|A)mirite?.*", "urrite!")]
 
 callback_list = [("(!|@)wiki \w+", wikisearch),
