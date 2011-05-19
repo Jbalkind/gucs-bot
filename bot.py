@@ -47,9 +47,7 @@ class Bot(Observer):
 
 
     def notify(self, data):
-        """
-        Respond to notification that some event being
-        observed has occurred.
+        """Respond to notification that some event being observed has occurred.
 
         Compares the given message against a collection
         of patterns and executes any appropriate callbacks.
@@ -141,9 +139,7 @@ def help_user(bot, data):
                  channel=data["from"])
 
 def load_callbacks(bot):
-    """
-    Reload the callbacks for this bot
-    """
+    """Reload the callbacks for this bot."""
     for name, function in callbacks.callback_list:
         bot.register(name, function)
     for phrase, response in callbacks.text_response_list:
@@ -151,9 +147,7 @@ def load_callbacks(bot):
         bot.register(phrase, phrase_response.phrase_callback)
 
 def svn_update(bot, data):
-    """
-    Update this bot with code from the svn repository
-    """
+    """Update this bot with code from the svn repository."""
     if (data["from"] in bot.input.owners):
         os.system("svn update")
         bot.send("SVN updated", channel = data["from"])
@@ -171,7 +165,7 @@ def main(server, nick, channels, name):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Friendly, Python, IRC bot")
     parser.add_argument("-s","--server",dest="server",action="store",
-                        default="irc.freenode.net",
+                        default="irc.freenode.org",
                         help="Name of IRC server to connect to, default is freenode")
     parser.add_argument("-n","--nick",dest="nick",action="store",
                         default="gucs_bot",

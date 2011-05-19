@@ -9,26 +9,30 @@ class Input(threading.Thread):
         self.owners = ["Happy0", "canard", "JamesMc", "Euan", "Finde", "heather_hb","calef13", "CMCL"]
         self.observers = []
         
-    """ Handles an privmsg commands """
     def privmsg(self, data, raw = None):
+	"""Handles an privmsg commands."""
+	# Split up channel name and message content
         parts = data["message"].split(" ", 1)
+	# Channel name is the "to" entry in the data dictionary
         data["to"] = parts[0]
-        data["message"] = parts[1].split(":", 1)[1].strip() # Chop off the : and any padding
+	# Chop off the : and any padding
+        data["message"] = parts[1].split(":", 1)[1].strip()
         
+	# Only owners can close the bot connection
         if data["from"] in self.owners and data["message"] == "gucs-bot.quit()":
             self.irc.quit()
         
         if data["CTCP"]:
-            print " " * 17  + "* %s %s" % (data["from"], data["message"])
+            print " " * 17 + "* {} {}".format(data["from"], data["message"])
         else:
-            print "%18s | %s" % (data["from"], data["message"])
+            print "{:18} | {}".format(data["from"], data["message"])
             
             for observer in self.observers:
                 observer.notify(data)
         
         
-    """ Attach the callback functions to the commands and run the parser """
     def run(self):
+	"""Attach the callback functions to the commands and run the parser."""
         self.irc.attach("PRIVMSG", self.privmsg)
    
         for line in self.irc.incoming():

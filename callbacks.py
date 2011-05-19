@@ -1,11 +1,8 @@
-# Callbacks
-import wiki
-import search
-import twitter
-import random
+# Callbacks import wiki import search import twitter import random
 import lastfm
 import urllib2
 import httplib
+import socket
 from datetime import datetime
 from threading import Condition
 
@@ -41,8 +38,9 @@ def suggest(bot, data):
     global suggestion_mutex
     message = data["message"].split()
     if len(message) >= 2:
-	description = "".join(["%s "%a for a in message[1:]])
-	suggestion = "Time: %s\nNick: %s\nSuggestion:\n%s\n\n"% (datetime.now().isoformat(" ") , data["from"] , description)
+	description = "".join(["{} ".format(a) for a in message[1:]])
+	suggestion = "Time: {}\nNick: {}\nSuggestion:\n{}\n\n".format(
+            datetime.now().isoformat(" ") , data["from"] , description)
 	#Mutex lock for writing to suggestion file
 	suggestion_mutex.acquire()
 	suggestion_file = open(suggestion_filename, "a")
@@ -58,41 +56,36 @@ def calefnick(bot, data):
     Calum has a lot of nicknames
     """
     random.seed()
-    bot.send("%s" % calef_nicks[random.randint(0,len(calef_nicks)-1)], 
+    bot.send("{}".format(calef_nicks[random.randint(0,len(calef_nicks)-1)]), 
 	     channel=data["to"])
 
 def boss_rand(bot, data):
-    """
-    Spit out a random lyric from 'like a boss'
-    """
+    """Spit out a random lyric from 'like a boss'"""
     random.seed()
-    bot.send("%s" % boss_phrases[random.randint(0, len(boss_phrases)-1)], 
+    bot.send("{}".format(boss_phrases[random.randint(0, len(boss_phrases)-1)]), 
              channel=data["to"])
 
 def boss_ord(bot, data):
-    """
-    Spits out the lyrics from 'like a boss' in order, uses a global
-    variable to keep track
+    """Spits out the lyrics from 'like a boss' in order, uses a global
+    variable to keep track.
     """
     global cur_boss
     if(cur_boss == len(boss_phrases)-1):
 	cur_boss = 0;
 
-    bot.send("%s" % boss_phrases[cur_boss], channel=data["to"])
+    bot.send("{}".format(boss_phrases[cur_boss]), channel=data["to"])
     cur_boss += 1
 
 
 def goofed(bot, data):
-    """
-    We all make mistakes
-    """
-    bot.send("Sorry, %s" % data["from"], channel=data["to"])
+    """We all make mistakes."""
+    bot.send("Sorry, {}".format(data["from"]), channel=data["to"])
     
 
 def wikisearch(bot, data):
-    """
-    Search wikipedia for a term. @sends result to channel, !sends
-    result in a personal message
+    """Search wikipedia for a term.
+
+    @sends result to channel, !sends result in a personal message.
     """
     if data["message"][0] == "!":
 	query = data["message"].replace("!wiki ", "")
@@ -104,41 +97,36 @@ def wikisearch(bot, data):
     results = wiki.wikiSearch(query)
 
     if (results == []):
-	bot.send("No wikipedia results for \"%s\"" % query,
+	bot.send("No wikipedia results for \"{}\"".format(query),
 		 channel = data[destination])
 	return
 
-    bot.send("Wikipedia results for \"%s\":" % query,
+    bot.send("Wikipedia results for \"{}\":".format(query),
 	     channel = data[destination])
 
     for result in results:
-	bot.send("* %s: %s" % (result[0], result[1]),
+	bot.send("* {}: {}".format(result[0], result[1]),
 		 channel=data[destination])
 
 
 def slap(bot, data):
-    """
-    Slap a user if they are silly
-    """
+    """Slap a user if they are silly."""
     print data["to"]
-    bot.me("slaps %s with a wet fish!" %data["message"].replace("!slap ", ""),
+    bot.me("slaps {} with a wet fish!".format(
+        data["message"].replace("!slap ", "")),
 	   channel = data["to"])
 
 def sleep_time(bot,data):
-    """
-    Kill's the bot
-    """
+    """Kill's the bot."""
     bot.irc.quit()
 
 
 def seen(bot, data):
-    """
-    Checks when the bot last saw a given nick
-    """
+    """Checks when the bot last saw a given nick."""
     user = data["message"].replace("!seen ", "")
 
     if user not in bot.activity:
-	bot.send("I haven't seen %s around here" % user,
+	bot.send("I haven't seen {} around here".format(user),
 		 channel = data["to"])
     else:
 	lastSeen = datetime.now() - bot.activity[user]
@@ -147,11 +135,11 @@ def seen(bot, data):
 	mins = lastSeen.seconds / 60
 	hours = mins / 60
 
-	daysStr = ("%d days, " % days) if days > 0 else ""
-	hoursStr = ("%d hours and " % hours) if hours > 0 else ""
-	timeAgo = "%s%s%d minutes" % (daysStr, hours, mins)
+	daysStr = ("{} days, ".format(days)) if days > 0 else ""
+	hoursStr = ("{} hours and ".format(hours)) if hours > 0 else ""
+	timeAgo = "{}{}{} minutes".format(daysStr, hours, mins)
 
-	bot.send("%s was last seen %s ago" % (user, timeAgo),
+	bot.send("{} was last seen {} ago".format(user, timeAgo),
 		 channel = data["to"])
 
 
@@ -169,9 +157,9 @@ def moo(bot, data):
 
     
 def websearch(bot, data):
-    """
-    Search the web for a query. use @ to send result to channel, and 
-    ! to receive as personal message
+    """Search the web for a query.
+
+    use @ to send result to channel, and ! to receive as personal message
     """
     if data["message"][0] == "!":
 	query = data["message"].replace("!search ", "")
@@ -187,20 +175,18 @@ def websearch(bot, data):
 	return
     
     if (results == []):
-	bot.send("No search results for \"%s\"" % query,
+	bot.send("No search results for \"{}\"".format(query),
 		 channel=data[destination])
 	return
     
-    bot.send("Web results for \"%s\":" % query,channel=data[destination])
+    bot.send("Web results for \"{}\":".format(query),channel=data[destination])
     
     for result in results:
-	bot.send("* %s: %s" % (result[0], result[1]), channel=data[destination])
+	bot.send("* {}: {}".format(result[0], result[1]), channel=data[destination])
 
 
 def twittersearch(bot, data):
-    """
-    Search twitter feeds for a term
-    """
+    """Search twitter feeds for a term."""
     if data["message"][0] == "!":
 	query = data["message"].replace("!twitter ", "")
 	destination = "from"
@@ -216,15 +202,15 @@ def twittersearch(bot, data):
 	return
 
     if (results == []):
-	bot.send("No twitter search results for \"%s\"" % query,
+	bot.send("No twitter search results for \"{}\"".format(query),
 		 channel=data[destination])
 	return
 
-	bot.send("Twitter search results for \"%s\":" % query,
+	bot.send("Twitter search results for \"{}\":".format(query),
 		 channel=data["to"])
     
     for result in results:
-	bot.send(u"* %s: %s" % (result[0], result[1]),
+	bot.send("* {}: {}".format(result[0], result[1]),
 		 channel=data["to"])
     
 
@@ -291,9 +277,9 @@ def register_text_response(bot, data):
     message = data["message"].split()
     if len(message) >= 3:
 	phrase = message[1]
-	response = "".join(["%s " %m for m in message[2:]])
+	response = "".join(["{} ".format(m) for m in message[2:]])
 	phrase_response = Phrase_Response(phrase, response)
-	bot.register("!%s" %phrase,
+	bot.register("!{}".format(phrase),
 		     phrase_response.phrase_callback)
 	phrase_response_dict[phrase] = phrase_response
 	bot.send("New response registered" ,
@@ -306,10 +292,7 @@ def fact(bot, data):
     bot.me("smacks back of hand on palm of other hand in approval.", data["to"])
 
 def last(bot, data):
-    """
-    Returns the song last.fm <user> is currently playing 
-    """
-    
+    """Returns the song last.fm <user> is currently playing."""
     user = data["message"].replace("!last ","")
     
     playing = lastfm.nowplaying(user)
@@ -318,12 +301,11 @@ def last(bot, data):
 	bot.send("No result found", data["to"])
     else:
 	for result in playing:
-	    bot.send("" + user + " is Now Playing: " + 
-		     result[0] + " - " + result[1] + "", data["to"])
+	    bot.send("{} is Now Playing {} - {}".format(
+                user, result[0], result[1]), data["to"])
 
 def similar_artists(bot,data):
-    """
-    Returns similar artists to specified artist using last.fm's suggestions
+    """Returns similar artists to specified artist using last.fm's suggestions.
     """
     
     artist = data["message"].replace("!similar ", "")
@@ -341,8 +323,9 @@ def similar_artists(bot,data):
 
 
 def findtitle(bot, data):
-    # Returns the title of a website
-    url = data["message"]
+    """Returns a wesbite's title if it has one."""
+    # Get website address
+    url = data["message"].split(" ", 1)[0]
     
     url = url.replace("http://","")
     
@@ -355,34 +338,61 @@ def findtitle(bot, data):
 	therest = ""
 
     conn = httplib.HTTPConnection(url)
-    conn.request("HEAD", therest)
-    res = conn.getresponse()
+    try:
+    	conn.request("HEAD", therest)
+    except socket.gaierror as inst:
+	bot.send("URL Error: {}".format(inst), data["to"])
+    else:
+        res = conn.getresponse()
 
-    for headers in res.getheaders():
-	if headers[0] == "content-type" and 'text/html' in headers[1]:
-	    try: 
-		url = data["message"]
-		
-		results = []
-		   
-		handle = urllib2.urlopen(url)
-		
-		title = ""
-		result = ""
-	    
-		for line in handle:
-		    result += line
-	    
-		handle.close()
-	    
-		if '<title>' in result and '</title>' in result:
-		    temp = result.split('<title>')[1]
-		    title = temp.split('</title>')[0]
-		    bot.send(title.replace("\n", ""), data["to"])
-	    
-	    
-	    except:
-		print "This site either doesn't exist, or doesn't appreciate urllib"
+        for headers in res.getheaders():
+            if headers[0] == "content-type" and 'text/html' in headers[1]:
+                try: 
+                    url = data["message"].split(" ", 1)[0]
+                    
+                    results = []
+                       
+                    handle = urllib2.urlopen(url)
+                    
+                    title = ""
+
+                    # Find the start of the title
+                    line = handle.readline()
+		    while "<title>" not in line:
+    		        line = handle.readline()
+
+		    # Make sure we are at the start of the title.
+		    if "<title>" in line:
+                        # Receive the part of the title within this line.
+                        temp = line.split("<title>", 1)[1]
+                        if "</title>" in temp:
+                            # If we have all the title take it out of temp.
+                            title = temp.split("</title>", 1)[0]
+                        else:
+                            title = temp
+                            # Search for the line with the end tag
+                            # add each line's text to the title.
+                            line = handle.readline()
+                            while "</title>" not in line:
+                                title += line
+                                line = handle.readline()
+			    			# If we have an end tag, ge the rest of the title
+			    			# otherwise set title to error message
+                            if "</title>" in line:
+                                title += line.split("</title>", 1)[0]
+                            else:
+                                title = "Error : No '</title>' found."
+                    else:
+                        title = "Error : No title found."
+                
+                    handle.close()
+                    # Send title to the channel(s).
+                    bot.send(title.replace("\n", ""), data["to"])
+                
+                
+                except:
+                    print "This site either doesn't exist, or doesn't appreciate urllib"
+
     
 
 #This list stores patterns and an associated text response. These are
@@ -410,4 +420,3 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
 		 (".*LIKE A BOSS.*", boss_rand),
 		 (".*like a boss.*", boss_ord),
 		 ("!suggest", suggest)]
-
