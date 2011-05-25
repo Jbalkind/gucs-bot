@@ -1,4 +1,7 @@
-# Callbacks import wiki import search import twitter import random
+import wiki
+import search
+import twitter
+import random
 import lastfm
 import urllib2
 import httplib
