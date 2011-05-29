@@ -140,7 +140,7 @@ def seen(bot, data):
 
 	daysStr = ("{} days, ".format(days)) if days > 0 else ""
 	hoursStr = ("{} hours and ".format(hours)) if hours > 0 else ""
-	timeAgo = "{}{}{} minutes".format(daysStr, hours, mins)
+	timeAgo = "{} {} {} minutes".format(daysStr, hoursStr, mins)
 
 	bot.send("{} was last seen {} ago".format(user, timeAgo),
 		 channel = data["to"])
