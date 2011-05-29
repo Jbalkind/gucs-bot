@@ -135,7 +135,7 @@ def seen(bot, data):
 	lastSeen = datetime.now() - bot.activity[user]
 
 	days = lastSeen.days
-	mins = lastSeen.seconds % 3600
+	mins = (lastSeen.seconds /60 ) % 60
 	hours = (lastSeen.seconds / 3600) % 24
 
 	daysStr = ("{} days, ".format(days)) if days > 0 else ""
