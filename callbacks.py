@@ -208,7 +208,7 @@ def define(bot, data):
 		bot.send("No search results for \"{}\"".format(query), channel=data[destination])
 		return
 	else:
-		bot.send("http://wwww.dictionary.com results for \"{}\":".format(query),channel=data[destination])
+		bot.send("http://www.dictionary.com results for \"{}\":".format(query),channel=data[destination])
     
         count = 0
         for result in results:
