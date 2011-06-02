@@ -16,17 +16,17 @@ def define(word):
     
     url = "http://api-pub.dictionary.com/v001?vid=%s&q=%s&type=define"  %(api_key, word)
     
-    #try:
-    dom = getresults(url) 
-    
-    for result in dom.getElementsByTagName("defset"):
-        results += [result.getElementsByTagName("def")[0].childNodes[0].nodeValue]
-            
+    try:
+        dom = getresults(url) 
         
-    return results 
-    #except:
-    #    print "bad url"
-    #    return []
+        for result in dom.getElementsByTagName("defset"):
+            results += [result.getElementsByTagName("def")[0].childNodes[0].nodeValue]
+                
+            
+        return results 
+    except:
+        print "bad url"
+        return []
 
 
 def getresults(url):
