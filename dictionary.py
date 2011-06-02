@@ -30,6 +30,8 @@ def define(word):
 
 
 def getresults(url):
+    print "the url is: " + url
+    
     handle = urllib2.urlopen(url)
     result = ""
 
