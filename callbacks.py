@@ -208,10 +208,15 @@ def define(bot, data):
 		bot.send("No search results for \"{}\"".format(query), channel=data[destination])
 		return
 	else:
-		bot.send("Dictionary results for \"{}\":".format(query),channel=data[destination])
+		bot.send("http://wwww.dictionary.com results for \"{}\":".format(query),channel=data[destination])
     
+        count = 0
         for result in results:
 	        bot.send("* {}".format(result), channel=data[destination])
+	        count+=1
+	        	        
+	        if count == 5:
+	        	break
 	
 
 def twittersearch(bot, data):
