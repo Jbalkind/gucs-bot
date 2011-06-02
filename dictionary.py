@@ -12,7 +12,7 @@ def define(word):
         api_key = open('dictapi.txt', 'r').read()
     except:
         print "dictapi.txt file doesn't exit"
-        return ""
+        return []
     
     url = "http://api-pub.dictionary.com/v001?vid=%s&q=%s&type=define"  %(api_key, word)
     
