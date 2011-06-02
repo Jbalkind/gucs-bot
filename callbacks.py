@@ -6,6 +6,7 @@ import lastfm
 import urllib2
 import httplib
 import socket
+import dictionary
 from datetime import datetime
 from threading import Condition
 
@@ -187,6 +188,31 @@ def websearch(bot, data):
     for result in results:
 	bot.send("* {}: {}".format(result[0], result[1]), channel=data[destination])
 
+
+def define(bot, data):
+	"""Search dictionary.com for definitions of a word
+
+    use @ to send result to channel, and ! to receive as personal message
+    """
+    
+	if data["message"][0] == "!":
+		query = data["message"].replace("!define ", "")
+		destination = "from"
+	else: 
+		query = data["message"].replace("@define ", "")
+		destination = "to"
+		
+	results = dictionary.search(query)
+	
+	if (results == []):
+		bot.send("No search results for \"{}\"".format(query), channel=data[destination])
+		return
+	else:
+		bot.send("Dictionary results for \"{}\":".format(query),channel=data[destination])
+    
+        for result in results:
+	        bot.send("* {}: {}".format(result[0], result[1]), channel=data[destination])
+	
 
 def twittersearch(bot, data):
     """Search twitter feeds for a term."""
@@ -422,4 +448,5 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
 		 (".*calef13\.randnick\(\).*", calefnick),
 		 (".*LIKE A BOSS.*", boss_rand),
 		 (".*like a boss.*", boss_ord),
-		 ("!suggest", suggest)]
+		 ("!suggest", suggest),
+		 ("(!|@)define \w", define)]

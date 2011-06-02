@@ -1,4 +1,4 @@
-# Author: Gordon Martin
+# Author: Happy0
 # Does things with various calls to the last.fm API :P
 
 from xml.dom import minidom
