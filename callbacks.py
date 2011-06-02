@@ -211,7 +211,7 @@ def define(bot, data):
 		bot.send("Dictionary results for \"{}\":".format(query),channel=data[destination])
     
         for result in results:
-	        bot.send("* {}: {}".format(result[0], result[1]), channel=data[destination])
+	        bot.send("* {}".format(result), channel=data[destination])
 	
 
 def twittersearch(bot, data):

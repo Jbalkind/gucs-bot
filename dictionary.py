@@ -42,7 +42,7 @@ def getresults(url):
 
 
 def main():
-   results = define("fdfs")
+   results = define("corporate")
    
    if results != []:
        for result in results:
