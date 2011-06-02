@@ -202,7 +202,7 @@ def define(bot, data):
 		query = data["message"].replace("@define ", "")
 		destination = "to"
 		
-	results = dictionary.search(query)
+	results = dictionary.define(query)
 	
 	if (results == []):
 		bot.send("No search results for \"{}\"".format(query), channel=data[destination])
