@@ -201,7 +201,8 @@ def define(bot, data):
 	else: 
 		query = data["message"].replace("@define ", "")
 		destination = "to"
-		
+	
+	print "query is: " + query	
 	results = dictionary.define(query)
 	
 	if (results == []):
@@ -210,6 +211,7 @@ def define(bot, data):
 	else:
 		bot.send("Dictionary results for \"{}\":".format(query),channel=data[destination])
     
+        print results
         for result in results:
 	        bot.send("* {}".format(result), channel=data[destination])
 	

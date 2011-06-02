@@ -26,6 +26,7 @@ def define(word):
         return results 
     except:
         print "bad url"
+        return []
 
 
 def getresults(url):
