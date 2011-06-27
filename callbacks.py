@@ -91,14 +91,14 @@ def goofed(bot, data):
 def wikisearch(bot, data):
     """Search wikipedia for a term.
 
-    @sends result to channel, !sends result in a personal message.
+    !sends result to channel, @sends result in a personal message.
     """
     if data["message"][0] == "!":
 	query = data["message"].replace("!wiki ", "")
-	destination = "from"
+	destination = "to"
     else: 
 	query = data["message"].replace("@wiki ", "")
-	destination = "to"
+	destination = "from"
     
     results = wiki.wikiSearch(query)
 
@@ -150,9 +150,7 @@ def seen(bot, data):
 
 
 def moo(bot, data):
-    """
-    Bot sends picture of a cow
-    """
+    """Bot sends picture of a cow."""
     bot.send("	       -__-",channel=data["to"])
     bot.send("	       (oo)",channel=data["to"])
     bot.send("	/-------\/   Moooooo!",channel=data["to"])
@@ -165,14 +163,14 @@ def moo(bot, data):
 def websearch(bot, data):
     """Search the web for a query.
 
-    use @ to send result to channel, and ! to receive as personal message
+    use ! to send result to channel, and @ to receive as personal message
     """
     if data["message"][0] == "!":
 	query = data["message"].replace("!search ", "")
-	destination = "from"
+	destination = "to"
     else: 
 	query = data["message"].replace("@search ", "")
-	destination = "to"
+	destination = "from"
     
     try:
 	results = search.search(query)
@@ -192,43 +190,45 @@ def websearch(bot, data):
 
 
 def define(bot, data):
-	"""Search dictionary.com for definitions of a word
+    """Search dictionary.com for definitions of a word
 
-    use @ to send result to channel, and ! to receive as personal message
+    use ! to send result to channel, and @ to receive as personal message
     """
-    
-	if data["message"][0] == "!":
-		query = data["message"].replace("!define ", "")
-		destination = "from"
-	else: 
-		query = data["message"].replace("@define ", "")
-		destination = "to"
+    if data["message"][0] == "!":
+	query = data["message"].replace("!define ", "")
+	destination = "to"
+    else: 
+	query = data["message"].replace("@define ", "")
+	destination = "from"
 	
-	results = dictionary.define(query)
+    results = dictionary.define(query)
 	
-	if (results == []):
-		bot.send("No search results for \"{}\"".format(query), channel=data[destination])
-		return
-	else:
-		bot.send("http://www.dictionary.com results for \"{}\":".format(query),channel=data[destination])
+    if (results == []):
+        bot.send("No search results for \"{}\"".format(query), channel=data[destination])
+	return
+    else:
+	bot.send("http://www.dictionary.com results for \"{}\":".format(query),channel=data[destination])
     
-        count = 0
-        for result in results:
-	        bot.send("* {}".format(result), channel=data[destination])
-	        count+=1
-	        	        
-	        if count == 5:
-	        	break
+    count = 0
+    for result in results:
+	bot.send("* {}".format(result), channel=data[destination])
+	count+=1
+	# Max number of definitions is 5
+	if count == 5:
+	    break
 	
 
 def twittersearch(bot, data):
-    """Search twitter feeds for a term."""
+    """Search twitter feeds for a term.
+
+    use ! to send result to channel, and @ to receive as personal message
+    """
     if data["message"][0] == "!":
 	query = data["message"].replace("!twitter ", "")
-	destination = "from"
+	destination = "to"
     else: 
 	query = data["message"].replace("@twitter ", "")
-	destination = "to"
+	destination = "from"
     
     try:
 	results = twitter.search(query)
@@ -251,9 +251,7 @@ def twittersearch(bot, data):
     
 
 def meow(bot, data):
-    """
-    Bot sends a cute kitty
-    """
+    """Bot sends a cute kitty."""
     bot.send("	/\\_/\\", channel=data["to"])
     bot.send(" ( o.o )	  meow!", channel=data["to"])
     bot.send("	> ^ <", channel=data["to"])
@@ -268,30 +266,27 @@ sventekQuotes = [
 ]
 
 def sventek(bot, data):
-    """
-    Bot delivers a line from the great man himself.
-    """
+    """Bot delivers a line from the great man himself."""
     bot.send(sventekQuotes[int(random.random() * len(sventekQuotes))], channel = data["to"])
 
-class Phrase_Response():
-    """
-    Class to hold information for a phrase response 
-    """
+class PhraseResponse(object):
+    """Class to hold information for a phrase response."""
 
     def __init__(self,	phrase, text_response):
 	self.phrase = phrase
 	self.text_response = text_response
 
     def phrase_callback(self, bot, data):
-	"""
-	responds appropriately with registered response (response may not be appropriate)  
-	"""
+	"""Responds appropriately with registered response.
+
+        Note : response may not be appropriate.
+        """
 	bot.send(self.text_response ,channel=data["to"])
 
 def unregister_text_response(bot,data):
-    """
-    Unregister a text response to a phrase, syntax \t
-    !unregister phrase
+    """Unregister a text response to a phrase.
+
+    Syntax: !unregister phrase.
     """
     global phrase_response_dict
     message = data["message"].split()
@@ -299,13 +294,13 @@ def unregister_text_response(bot,data):
 	phrase = message[1]
 	if phrase in phrase_response_dict:
 	    phrase_response = phrase_response_dict.pop(phrase)
-	    bot.unregister("!%s"%phrase)
+	    bot.unregister("!{}".format(phrase))
 	    
 def register_text_response(bot, data):
-    """
-    Register a text response to a given phrase
-    First word is the phrase, the rest of the sentance is the text response
-    for instance \t
+    """Register a text response to a given phrase.
+
+    First word is the phrase, the rest of
+    the sentence is the text response for instance:
     !register canard is cool
     has the bot respond to !canard with is cool
     """
@@ -315,14 +310,11 @@ def register_text_response(bot, data):
 	phrase = message[1]
 	response = "".join(["{} ".format(m) for m in message[2:]])
 	phrase_response = Phrase_Response(phrase, response)
-	bot.register("!{}".format(phrase),
-		     phrase_response.phrase_callback)
+	bot.register("!{}".format(phrase), phrase_response.phrase_callback)
 	phrase_response_dict[phrase] = phrase_response
-	bot.send("New response registered" ,
-		 channel=data["to"])
+	bot.send("New response registered", channel=data["to"])
     else:
-	bot.send("Could not register function" ,
-		 channel=data["to"])
+	bot.send("Could not register function", channel=data["to"])
 
 def fact(bot, data):
     bot.me("smacks back of hand on palm of other hand in approval.", data["to"])
@@ -341,9 +333,10 @@ def last(bot, data):
                 user, result[0], result[1]), data["to"])
 
 def similar_artists(bot,data):
-    """Returns similar artists to specified artist using last.fm's suggestions.
+    """Returns similar artists to specified artist.
+
+    Uses last.fm's suggestions.
     """
-    
     artist = data["message"].replace("!similar ", "")
     
     similar = lastfm.getsimilar(artist)
@@ -447,7 +440,7 @@ def get_artist_iterator(bot, data):
     """Registers a phrase for an artist's lyric generator.
 
     Format is phrase artist e.g. !lyiter sclub S Club 7
-    then !sclub gives out random song lyrics
+    then !sclub gives out random song lyrics.
     """
     msg = data["message"].replace("!lyiter", "").strip()
     phrase, artist = msg.split(" ", 1)

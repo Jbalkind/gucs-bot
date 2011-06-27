@@ -4,7 +4,7 @@ import Input
 import Output
 import callbacks
 from lyricmaster import LyricMaster
-from callbacks import Phrase_Response
+from callbacks import PhraseResponse
 from Irc.irc import Irc
 from datetime import datetime
 import re
@@ -111,7 +111,7 @@ def force_reload(bot,data):
             load_callbacks(bot)
             bot.send("Callbacks reloaded", channel = data["from"])
     	except:
-    		bot.send("There was an error in callbacks.py, callbacks were not reloaded.", channel = data["from"])
+            bot.send("There was an error in callbacks.py, callbacks were not reloaded.", channel = data["from"])
 
 
 def help_user(bot, data):
@@ -147,7 +147,7 @@ def load_callbacks(bot):
     for name, function in callbacks.callback_list:
         bot.register(name, function)
     for phrase, response in callbacks.text_response_list:
-        phrase_response = Phrase_Response(phrase, response)
+        phrase_response = PhraseResponse(phrase, response)
         bot.register(phrase, phrase_response.phrase_callback)
 
 def svn_update(bot, data):
