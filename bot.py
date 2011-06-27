@@ -3,6 +3,7 @@ import threading
 import Input
 import Output
 import callbacks
+from lyricmaster import LyricMaster
 from callbacks import Phrase_Response
 from Irc.irc import Irc
 from datetime import datetime
@@ -44,6 +45,9 @@ class Bot(Observer):
 
         self.callbacks = {}
         self.activity = {} # Maps usernames to activity
+
+        # Create bot's LyricMaster
+        self.lymaster = LyricMaster()
 
 
     def notify(self, data):

@@ -7,8 +7,10 @@ import urllib2
 import httplib
 import socket
 import dictionary
+from lyricmaster import LyricMaster
 from datetime import datetime
 from threading import Condition
+from BaseHTTPServer import BaseHTTPRequestHandler
 
 calef_nicks = ["calef37", "scarface", "cow hoof", "cow calf", 
 	       "leatherback", "The Samurai", "Colin", "sits next to Heather", "has a bit of facial hair", "Calm"]
@@ -386,7 +388,13 @@ def findtitle(bot, data):
                     
                     results = []
                        
-                    handle = urllib2.urlopen(url)
+                    # Set up our request for the url
+                    req = urllib2.Request(url)
+                    # Change the user-agent to stop some websites
+                    # rejecting request
+                    req.add_header("User-Agent",
+                                   "Gutsy/1.0 {}".format(req.get_full_url()))
+                    handle = urllib2.urlopen(req)
                     
                     title = ""
 
@@ -410,8 +418,8 @@ def findtitle(bot, data):
                             while "</title>" not in line:
                                 title += line
                                 line = handle.readline()
-			    			# If we have an end tag, ge the rest of the title
-			    			# otherwise set title to error message
+			    # If we have an end tag, ge the rest of the title
+			    # otherwise set title to error message
                             if "</title>" in line:
                                 title += line.split("</title>", 1)[0]
                             else:
@@ -422,11 +430,35 @@ def findtitle(bot, data):
                     handle.close()
                     # Send title to the channel(s).
                     bot.send(title.replace("\n", ""), data["to"])
-                
-                
-                except:
-                    print "This site either doesn't exist, or doesn't appreciate urllib"
+                except urllib2.URLError as inst:
+                    # Default msg
+                    errMsg = "This site either doesn't exist, or doesn't appreciate urllib"
+                    if hasattr(inst, "reason"):
+                        errMsg = "Error Code {}: {}".format(
+                            inst.reason[0], inst.reason[1])
+                    elif hasattr(inst, "code"):
+                        # Get the short message for error code
+                        errMsg = "HTTP Error {}: {}".format(
+                            inst.code,
+                            BaseHTTPRequestHandler.responses[inst.code][0])
+                    bot.send(errMsg)
 
+def get_artist_iterator(bot, data):
+    """Registers a phrase for an artist's lyric generator.
+
+    Format is phrase artist e.g. !lyiter sclub S Club 7
+    then !sclub gives out random song lyrics
+    """
+    msg = data["message"].replace("!lyiter", "").strip()
+    phrase, artist = msg.split(" ", 1)
+    artist = artist.upper()
+    if bot.lymaster.has_artist(artist):
+        bot.register("!{}".format(phrase), bot.lymaster.get_artist_iter(artist))
+        bot.send("New lyric generator registered for artist \"{}\"".format(
+            artist), channel=data["to"])
+    else:
+        bot.send("Unable to register lyric generator for artist \"{}\"".format(
+            artist), channel=data["to"])
     
 
 #This list stores patterns and an associated text response. These are
@@ -454,4 +486,5 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
 		 (".*LIKE A BOSS.*", boss_rand),
 		 (".*like a boss.*", boss_ord),
 		 ("!suggest", suggest),
-		 ("(!|@)define \w", define)]
+		 ("(!|@)define \w", define),
+                 ("!lyiter \w", get_artist_iterator)]

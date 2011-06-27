@@ -7,7 +7,7 @@ the XML result obtained.
 Euan Freeman
 """
 
-from  xml.dom import minidom
+from xml.dom import minidom
 import urllib2
 import urllib
 
