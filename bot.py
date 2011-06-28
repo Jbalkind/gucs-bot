@@ -3,6 +3,7 @@ import threading
 import Input
 import Output
 import callbacks
+from rss import RSSReader
 from lyricmaster import LyricMaster
 from callbacks import PhraseResponse
 from Irc.irc import Irc
@@ -49,7 +50,9 @@ class Bot(Observer):
         # Create bot's LyricMaster
         self.lymaster = LyricMaster()
 
-
+        # Create bot's RSSReader
+        self.rssReader = RSSReader()
+        
     def notify(self, data):
         """Respond to notification that some event being observed has occurred.
 

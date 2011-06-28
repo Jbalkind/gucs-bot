@@ -1,0 +1,2 @@
+bbcnews:http://feeds.bbci.co.uk/news/rss.xml?edition=int
+bbctennis:http://newsrss.bbc.co.uk/rss/sportonline_world_edition/tennis/rss.xml

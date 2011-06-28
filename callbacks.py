@@ -7,7 +7,7 @@ import urllib2
 import httplib
 import socket
 import dictionary
-from rss import DOMReader
+from rss import RSSReader
 from lyricmaster import LyricMaster
 from datetime import datetime
 from threading import Condition
@@ -382,49 +382,46 @@ def findtitle(bot, data):
                     
                     results = []
                        
-##                    # Set up our request for the url
-##                    req = urllib2.Request(url)
-##                    # Change the user-agent to stop some websites
-##                    # rejecting request
-##                    req.add_header("User-Agent",
-##                                   "Gutsy/1.0 {}".format(req.get_full_url()))
-##                    handle = urllib2.urlopen(req)
-                    domReader = DOMReader()
+                    # Set up our request for the url
+                    req = urllib2.Request(url)
+                    # Change the user-agent to stop some websites
+                    # rejecting request
+                    req.add_header("User-Agent",
+                                   "Gutsy/1.0 {}".format(req.get_full_url()))
+                    handle = urllib2.urlopen(req)
                     
-                    doc = domReader.get_document(url)
-                    title = domReader.get_text(
-                        doc.getElementsByTagName("title")[0].childNodes)
+                    title = ""
 
-##                    # Find the start of the title
-##                    line = handle.readline()
-##		    while "<title>" not in line:
-##    		        line = handle.readline()
-##
-##		    # Make sure we are at the start of the title.
-##		    if "<title>" in line:
-##                        # Receive the part of the title within this line.
-##                        temp = line.split("<title>", 1)[1]
-##                        if "</title>" in temp:
-##                            # If we have all the title take it out of temp.
-##                            title = temp.split("</title>", 1)[0]
-##                        else:
-##                            title = temp
-##                            # Search for the line with the end tag
-##                            # add each line's text to the title.
-##                            line = handle.readline()
-##                            while "</title>" not in line:
-##                                title += line
-##                                line = handle.readline()
-##			    # If we have an end tag, ge the rest of the title
-##			    # otherwise set title to error message
-##                            if "</title>" in line:
-##                                title += line.split("</title>", 1)[0]
-##                            else:
-##                                title = "Error : No '</title>' found."
-##                    else:
-##                        title = "Error : No title found."
-##                
-##                    handle.close()
+                    # Find the start of the title
+                    line = handle.readline()
+		    while "<title>" not in line:
+    		        line = handle.readline()
+
+		    # Make sure we are at the start of the title.
+		    if "<title>" in line:
+                        # Receive the part of the title within this line.
+                        temp = line.split("<title>", 1)[1]
+                        if "</title>" in temp:
+                            # If we have all the title take it out of temp.
+                            title = temp.split("</title>", 1)[0]
+                        else:
+                            title = temp
+                            # Search for the line with the end tag
+                            # add each line's text to the title.
+                            line = handle.readline()
+                            while "</title>" not in line:
+                                title += line
+                                line = handle.readline()
+			    # If we have an end tag, ge the rest of the title
+			    # otherwise set title to error message
+                            if "</title>" in line:
+                                title += line.split("</title>", 1)[0]
+                            else:
+                                title = "Error : No '</title>' found."
+                    else:
+                        title = "Error : No title found."
+                
+                    handle.close()
                     # Send title to the channel(s).
                     bot.send(title.replace("\n", ""), data["to"])
                 except urllib2.URLError as inst:
@@ -456,6 +453,27 @@ def get_artist_iterator(bot, data):
     else:
         bot.send("Unable to register lyric generator for artist \"{}\"".format(
             artist), channel=data["to"])
+
+def get_feed(bot, data):
+    """Get the feed from our RSSReader."""
+    feed = data["message"].replace("@rss", "").strip()
+    bot.rssReader.get_feed(bot, data, feed)
+
+def add_feed(bot, data):
+    """Add feed to RSSReader."""
+    feed = data["message"].replace("@addfeed", "").strip()
+    feed = feed.split(" ", 1)
+    feedName, feedURL = feed[0], feed[1]
+    bot.rssReader.add_feed(bot, data, feedName, feedURL)
+    # Save feeds to file
+    bot.rssReader.save_feeds()
+
+def del_feed(bot, data):
+    """Delete feed from RSSReader."""
+    feed = data["message"].replace("@delfeed", "").strip()
+    bot.rssReader.del_feed(bot, data, feedName)
+    # Save feeds to file
+    bot.rssReader.save_feeds()
     
 
 #This list stores patterns and an associated text response. These are
@@ -484,4 +502,7 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
 		 (".*like a boss.*", boss_ord),
 		 ("!suggest", suggest),
 		 ("(!|@)define \w", define),
-                 ("!lyiter \w", get_artist_iterator)]
+                 ("!lyiter \w", get_artist_iterator),
+                 ("@rss \w+", get_feed),
+                 ("@addfeed \w+", add_feed),
+                 ("@delfeed \w+", del_feed)]
