@@ -7,6 +7,7 @@ import urllib2
 import httplib
 import socket
 import dictionary
+from rss import DOMReader
 from lyricmaster import LyricMaster
 from datetime import datetime
 from threading import Condition
@@ -381,46 +382,49 @@ def findtitle(bot, data):
                     
                     results = []
                        
-                    # Set up our request for the url
-                    req = urllib2.Request(url)
-                    # Change the user-agent to stop some websites
-                    # rejecting request
-                    req.add_header("User-Agent",
-                                   "Gutsy/1.0 {}".format(req.get_full_url()))
-                    handle = urllib2.urlopen(req)
+##                    # Set up our request for the url
+##                    req = urllib2.Request(url)
+##                    # Change the user-agent to stop some websites
+##                    # rejecting request
+##                    req.add_header("User-Agent",
+##                                   "Gutsy/1.0 {}".format(req.get_full_url()))
+##                    handle = urllib2.urlopen(req)
+                    domReader = DOMReader()
                     
-                    title = ""
+                    doc = domReader.get_document(url)
+                    title = domReader.get_text(
+                        doc.getElementsByTagName("title")[0].childNodes)
 
-                    # Find the start of the title
-                    line = handle.readline()
-		    while "<title>" not in line:
-    		        line = handle.readline()
-
-		    # Make sure we are at the start of the title.
-		    if "<title>" in line:
-                        # Receive the part of the title within this line.
-                        temp = line.split("<title>", 1)[1]
-                        if "</title>" in temp:
-                            # If we have all the title take it out of temp.
-                            title = temp.split("</title>", 1)[0]
-                        else:
-                            title = temp
-                            # Search for the line with the end tag
-                            # add each line's text to the title.
-                            line = handle.readline()
-                            while "</title>" not in line:
-                                title += line
-                                line = handle.readline()
-			    # If we have an end tag, ge the rest of the title
-			    # otherwise set title to error message
-                            if "</title>" in line:
-                                title += line.split("</title>", 1)[0]
-                            else:
-                                title = "Error : No '</title>' found."
-                    else:
-                        title = "Error : No title found."
-                
-                    handle.close()
+##                    # Find the start of the title
+##                    line = handle.readline()
+##		    while "<title>" not in line:
+##    		        line = handle.readline()
+##
+##		    # Make sure we are at the start of the title.
+##		    if "<title>" in line:
+##                        # Receive the part of the title within this line.
+##                        temp = line.split("<title>", 1)[1]
+##                        if "</title>" in temp:
+##                            # If we have all the title take it out of temp.
+##                            title = temp.split("</title>", 1)[0]
+##                        else:
+##                            title = temp
+##                            # Search for the line with the end tag
+##                            # add each line's text to the title.
+##                            line = handle.readline()
+##                            while "</title>" not in line:
+##                                title += line
+##                                line = handle.readline()
+##			    # If we have an end tag, ge the rest of the title
+##			    # otherwise set title to error message
+##                            if "</title>" in line:
+##                                title += line.split("</title>", 1)[0]
+##                            else:
+##                                title = "Error : No '</title>' found."
+##                    else:
+##                        title = "Error : No title found."
+##                
+##                    handle.close()
                     # Send title to the channel(s).
                     bot.send(title.replace("\n", ""), data["to"])
                 except urllib2.URLError as inst:
