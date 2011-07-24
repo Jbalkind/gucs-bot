@@ -1,5 +1,7 @@
 import socket
 import binascii
+from time import sleep
+import string
 
 class Irc:
     """ A simple class for basic IRC access """
@@ -60,7 +62,10 @@ class Irc:
             raise NoInfoSet
 
         try:
-            self.socket.send("PRIVMSG {} :{}\r\n".format(channel, msg))
+            for line in string.split(msg,'\n'):
+                print line
+                sleep(1)
+                self.socket.send("PRIVMSG {} :{}\r\n".format(channel, line))
         except:
             self.socket.send("PRIVMSG {} :{}\r\n".format(channel, "[an exception was raised]"))
          
