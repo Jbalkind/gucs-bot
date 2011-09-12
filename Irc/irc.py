@@ -65,9 +65,9 @@ class Irc:
             for line in string.split(msg,'\n'):
                 print line
                 sleep(1)
-                self.socket.send("PRIVMSG {} :{}\r\n".format(channel, line))
+                self.socket.send("PRIVMSG {} :{}\r\n".format(channel, line).encode(encoding='utf8'))
         except:
-            self.socket.send("PRIVMSG {} :{}\r\n".format(channel, "[an exception was raised]"))
+            self.socket.send("PRIVMSG {} :{}\r\n".format(channel, "[an exception was raised]").encode(encoding='utf8'))
          
     def me(self, channel, msg):
 	"""Send a /me command to the specifed room."""
