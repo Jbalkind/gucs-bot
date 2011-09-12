@@ -23,8 +23,8 @@ def nowplaying(user):
         for result in dom.getElementsByTagName("track"):
             if (result.hasAttributes()): # There is a "now playing" attribute, if they're currently playing a song
                 
-                artist = result.getElementsByTagName("artist")[0].childNodes[0].nodeValue
-                title = result.getElementsByTagName("name")[0].childNodes[0].nodeValue
+                artist = result.getElementsByTagName("artist")[0].childNodes[0].nodeValue.encode(encoding='utf8')
+                title = result.getElementsByTagName("name")[0].childNodes[0].nodeValue.encode(encoding='utf8')
             
                 results += [(artist, title)]
             
