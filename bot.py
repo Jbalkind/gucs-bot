@@ -175,10 +175,10 @@ if __name__ == "__main__":
                         default="irc.freenode.org",
                         help="Name of IRC server to connect to, default is freenode")
     parser.add_argument("-n","--nick",dest="nick",action="store",
-                        default="gucs_bot",
+                        default="gucx_bot",
                         help="Nickname for bot")
     parser.add_argument("--name",dest="name",action="store",
-                        default="gucs_bot",
+                        default="gucx_bot",
                         help="Name of bot")
     parser.add_argument("channels", type = str, metavar='C',
                         help="Channels to connect to, include \#'s with quotation marks",
