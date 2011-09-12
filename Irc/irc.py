@@ -60,14 +60,17 @@ class Irc:
         """
         if not self.nickname:
             raise NoInfoSet
+            
+           
+        msg = repr(msg);
 
         try:
             for line in string.split(msg,'\n'):
                 print line
                 sleep(1)
-                self.socket.send("PRIVMSG {} :{}\r\n".format(channel, line).encode(encoding='utf8'))
+                self.socket.send("PRIVMSG {} :{}\r\n".format(channel, line))
         except:
-            self.socket.send("PRIVMSG {} :{}\r\n".format(channel, "[an exception was raised]").encode(encoding='utf8'))
+            self.socket.send("PRIVMSG {} :{}\r\n".format(channel, "[an exception was raised]"))
          
     def me(self, channel, msg):
 	"""Send a /me command to the specifed room."""
