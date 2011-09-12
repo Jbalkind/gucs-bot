@@ -2,6 +2,7 @@ import socket
 import binascii
 from time import sleep
 import string
+import sys, traceback
 
 class Irc:
     """ A simple class for basic IRC access """
@@ -63,10 +64,12 @@ class Irc:
 
         try:
             for line in string.split(msg,'\n'):
-                print line
+                line2 = line.encode( "utf-8" )
+                print line2
                 sleep(1)
-                self.socket.send(u"PRIVMSG {} :{}\r\n".format(channel, line))
+                self.socket.send('PRIVMSG {} :{}\r\n'.format(channel, line2))
         except:
+            traceback.print_exc(file=sys.stdout)
             self.socket.send(u"PRIVMSG {} :{}\r\n".format(channel, "[an exception was raised]"))
          
     def me(self, channel, msg):

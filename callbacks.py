@@ -330,7 +330,7 @@ def last(bot, data):
 	bot.send("No result found", data["to"])
     else:
 	for result in playing:
-	    bot.send("{} is Now Playing {} - {}".format(
+	    bot.send(u"{} is Now Playing {} - {}".format(
                 user, result[0], result[1]), data["to"])
 
 def similar_artists(bot,data):

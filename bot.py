@@ -11,6 +11,7 @@ from datetime import datetime
 import re
 import os
 import argparse
+import sys
 
 class Observer:
     def notify(self, msg):
