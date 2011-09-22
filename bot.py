@@ -24,11 +24,17 @@ class Bot(Observer):
     Respond to chatter by registering callbacks which
     are triggered by a regular expression pattern match.
     """
-
+    
     def __init__(self, server, channels, nick, name):
         self.nick = nick
         
-        self.irc = Irc()
+        #populate whitelist from file whitelist.txt
+        f = open('whitelist.txt', 'r')
+        line = f.readline().strip()
+        self.whitelist = line.split(',')
+        print self.whitelist
+        
+        self.irc = Irc(self.whitelist)
         self.irc.connect(server)
         self.irc.set_info(nick, nick)
 
@@ -54,6 +60,9 @@ class Bot(Observer):
         # Create bot's RSSReader
         self.rssReader = RSSReader()
         
+        #load whitelist from file
+        
+        
     def notify(self, data):
         """Respond to notification that some event being observed has occurred.
 
@@ -62,6 +71,7 @@ class Bot(Observer):
 
         * data = {"from", "to", "message"}
         """
+
         for pattern in self.callbacks.keys():
             if re.match(pattern, data["message"]) != None:
                 
@@ -160,8 +170,7 @@ def svn_update(bot, data):
         os.system("svn update")
         bot.send("SVN updated", channel = data["from"])
         force_reload(bot,data)
-
-
+        
 # Main function
 def main(server, nick, channels, name):
     gucsbot = Bot(server, channels, nick, name)
@@ -169,6 +178,7 @@ def main(server, nick, channels, name):
     gucsbot.register("!update", force_reload)
     gucsbot.register("!help", help_user)
     gucsbot.register("!svn", svn_update)
+    
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Friendly, Python, IRC bot")
@@ -185,6 +195,7 @@ if __name__ == "__main__":
                         help="Channels to connect to, include \#'s with quotation marks",
                         nargs='+',)
     args = parser.parse_args()
+    
     main(server = args.server, nick = args.nick, name = args.name,
          channels = args.channels)
 

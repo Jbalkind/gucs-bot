@@ -6,7 +6,7 @@ class Input(threading.Thread):
     def __init__(self, irc):
         threading.Thread.__init__(self)
         self.irc = irc
-        self.owners = ["Happy0", "canard", "JamesMc", "Euan", "Finde", "heather_hb","calef13", "CMCL","hxw"]
+        self.owners = ["hxw","calef13","euan","ewy","heather_hb","canard","JamesMc","Happy0"]
         self.observers = []
         
     def privmsg(self, data, raw = None):
@@ -21,7 +21,7 @@ class Input(threading.Thread):
 	# Only owners can close the bot connection
         if data["from"] in self.owners and data["message"] == "gucs-bot.quit()":
             self.irc.quit()
-        
+            
         if data["CTCP"]:
             print " " * 17 + "* {} {}".format(data["from"], data["message"])
         else:

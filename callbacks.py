@@ -15,6 +15,8 @@ from BaseHTTPServer import BaseHTTPRequestHandler
 
 calef_nicks = ["calef37", "scarface", "cow hoof", "cow calf", 
 	       "leatherback", "The Samurai", "Colin", "sits next to Heather", "has a bit of facial hair", "Calm"]
+	       
+blacklist = ["finde"];
 cur_boss = 0
 boss_phrases = ["TALK TO CORPORATE", "APPROVE MEMOS", "LEAD A WORKSHOP",
 		"REMEMBER BIRTHDAYS", "DIRECT WORKFLOW", "MY OWN BATHROOM", 
@@ -475,6 +477,24 @@ def del_feed(bot, data):
     # Save feeds to file
     bot.rssReader.save_feeds()
     
+def add_to_whitelist(bot, data):
+    user = data["message"].replace("!whitelist ", "")
+    if (data["from"] in bot.input.owners):
+        if user not in bot.irc.whitelist:
+            bot.irc.whitelist.append(user)
+            bot.send("User '"+user+"' added to whitelist", channel = data["to"])
+        else:
+            bot.send("User '"+user+"' is already on the whitelist", channel = data["to"])
+        
+def remove_from_whitelist(bot, data):
+    user = data["message"].replace("!unwhitelist ", "")
+    if (data["from"] in bot.input.owners):
+        if user in bot.irc.whitelist:
+            bot.irc.whitelist.remove(user)
+            bot.send("User '"+user+"' removed from whitelist", channel = data["to"])
+        else:
+            bot.send("User '"+user+"' is not on the whitelist", channel = data["to"])
+  
 
 #This list stores patterns and an associated text response. These are
 #loaded by the bot on startup or on !update
@@ -505,4 +525,5 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("!lyiter \w", get_artist_iterator),
                  ("@rss \w+", get_feed),
                  ("@addfeed \w+", add_feed),
-                 ("@delfeed \w+", del_feed)]
+                 ("@delfeed \w+", del_feed),
+                 ("!whitelist \w", add_to_whitelist),("!unwhitelist \w", remove_from_whitelist)]

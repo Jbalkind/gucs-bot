@@ -10,8 +10,10 @@ class Irc:
     _hex01 = binascii.unhexlify("01")
     callback = {}
     
-    def __init__(self):
+    
+    def __init__(self, wl):
         self.socket = socket.socket()
+        self.whitelist = wl
       
     
     def connect(self, server, port = 6667):
@@ -100,6 +102,11 @@ class Irc:
             if len(info) > 1:
                 data["from"] = info[0]
                 data["host"] = info[1]
+                if data["from"].lower() not in self.whitelist:
+                    print "not on whitelist"
+                    return
+                    
+            
             
             if len(parts) > 2:
 		# message is both channel name and message separated by a colon.
@@ -108,6 +115,8 @@ class Irc:
 
             if len(parts) > 1:
                 data["command"] = parts[1]
+                
+                #put a nick check in here
                 
                 # Call the callback functions
                 for func in self.callback.get(data["command"], []):
