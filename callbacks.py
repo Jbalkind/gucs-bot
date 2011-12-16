@@ -476,6 +476,17 @@ def del_feed(bot, data):
     bot.rssReader.del_feed(bot, data, feedName)
     # Save feeds to file
     bot.rssReader.save_feeds()
+
+def parse(bot, data):
+    """Parse the text received in the message."""
+    class b(object):
+        def __init__(self, bot, theChannel):
+            self.theChannel = theChannel
+        def send(self, msg):
+            bot.send(msg, channel=self.theChannel)
+    a = b(bot, data["to"])
+    string = data["message"].replace(">>", "").strip()
+    bot.parser.parse(a, string)
     
 def add_to_whitelist(bot, data):
     user = data["message"].replace("!whitelist ", "")

@@ -1,4 +1,4 @@
-# Created on 27/6/2011 by Craig McL
+# Created on 27/6/2011 by Craig McL (CMCL) <mistercouk@gmail.com>
 # Purpose : RSS reader
 
 import xml.dom.minidom

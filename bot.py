@@ -8,6 +8,7 @@ from lyricmaster import LyricMaster
 from callbacks import PhraseResponse
 from Irc.irc import Irc
 from datetime import datetime
+from simpleparser import SimpleParser
 import re
 import os
 import argparse
@@ -37,6 +38,8 @@ class Bot(Observer):
         self.irc = Irc(self.whitelist)
         self.irc.connect(server)
         self.irc.set_info(nick, nick)
+        # Lock object for sending messages
+        self.sendLock = threading.Lock()
 
         self.channels = channels
 
@@ -59,6 +62,9 @@ class Bot(Observer):
 
         # Create bot's RSSReader
         self.rssReader = RSSReader()
+
+        # Create bot's simple parser
+        self.parser = SimpleParser()
         
         #load whitelist from file
         
@@ -99,26 +105,18 @@ class Bot(Observer):
         self.callbacks.pop(pattern)
 
     def send(self, msg, channel=""):
-        """
-        Sends a message to specified channel.
-        """
-        #if channel == "": channel = self.channel
-
+        """Sends a message to specified channel."""
+        self.sendLock.acquire()
         self.irc.send(channel, msg)
+        self.sendLock.release()
 
 
     def me(self, msg, channel=""):
-        """
-        Sends a /me message to specified channel.
-        """
-        #if channel == "": channel = self.channel
-
+        """Sends a /me message to specified channel."""
         self.irc.me(channel, msg)
 
 def force_reload(bot,data):
-    """
-    Force the bot to reload its callback methods
-    """
+    """Force the bot to reload its callback methods."""
     if (data["from"] in bot.input.owners):
     	try:
             reload(callbacks)
@@ -129,8 +127,9 @@ def force_reload(bot,data):
 
 
 def help_user(bot, data):
-    """
-    Help function for the bot. To get a list of all functions and what
+    """ Help function for the bot.
+
+    To get a list of all functions and what
     they do type !help. For specific functions, type !help followed by
     the function names
     """

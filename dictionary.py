@@ -14,7 +14,8 @@ def define(word):
         print "dictapi.txt file doesn't exit"
         return []
     
-    url = "http://api-pub.dictionary.com/v001?vid=%s&q=%s&type=define"  %(api_key, word)
+    url = "http://api-pub.dictionary.com/v001?vid={}&q={}&type=define".format(
+        api_key, word)
     
     try:
         dom = getresults(url) 
