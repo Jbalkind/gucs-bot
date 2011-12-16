@@ -487,25 +487,6 @@ def parse(bot, data):
     a = b(bot, data["to"])
     string = data["message"].replace(">>", "").strip()
     bot.parser.parse(a, string)
-    
-def add_to_whitelist(bot, data):
-    user = data["message"].replace("!whitelist ", "")
-    if (data["from"] in bot.input.owners):
-        if user not in bot.irc.whitelist:
-            bot.irc.whitelist.append(user)
-            bot.send("User '"+user+"' added to whitelist", channel = data["to"])
-        else:
-            bot.send("User '"+user+"' is already on the whitelist", channel = data["to"])
-        
-def remove_from_whitelist(bot, data):
-    user = data["message"].replace("!unwhitelist ", "")
-    if (data["from"] in bot.input.owners):
-        if user in bot.irc.whitelist:
-            bot.irc.whitelist.remove(user)
-            bot.send("User '"+user+"' removed from whitelist", channel = data["to"])
-        else:
-            bot.send("User '"+user+"' is not on the whitelist", channel = data["to"])
-  
 
 #This list stores patterns and an associated text response. These are
 #loaded by the bot on startup or on !update
@@ -537,4 +518,4 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("@rss \w+", get_feed),
                  ("@addfeed \w+", add_feed),
                  ("@delfeed \w+", del_feed),
-                 ("!whitelist \w", add_to_whitelist),("!unwhitelist \w", remove_from_whitelist)]
+                 (">> .*", parse)]

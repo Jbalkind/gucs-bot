@@ -29,13 +29,7 @@ class Bot(Observer):
     def __init__(self, server, channels, nick, name):
         self.nick = nick
         
-        #populate whitelist from file whitelist.txt
-        f = open('whitelist.txt', 'r')
-        line = f.readline().strip()
-        self.whitelist = line.split(',')
-        print self.whitelist
-        
-        self.irc = Irc(self.whitelist)
+        self.irc = Irc(self.)
         self.irc.connect(server)
         self.irc.set_info(nick, nick)
         # Lock object for sending messages
@@ -65,8 +59,6 @@ class Bot(Observer):
 
         # Create bot's simple parser
         self.parser = SimpleParser()
-        
-        #load whitelist from file
         
         
     def notify(self, data):
