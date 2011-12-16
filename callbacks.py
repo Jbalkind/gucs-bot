@@ -518,4 +518,6 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("@rss \w+", get_feed),
                  ("@addfeed \w+", add_feed),
                  ("@delfeed \w+", del_feed),
-                 (">> .*", parse)]
+                 # For parser
+                 ("`.*", parse),
+                 ("print .*", parse)]
