@@ -11,9 +11,8 @@ class Irc:
     callback = {}
     
     
-    def __init__(self, wl):
+    def __init__(self):
         self.socket = socket.socket()
-        self.whitelist = wl
       
     
     def connect(self, server, port = 6667):
@@ -102,9 +101,6 @@ class Irc:
             if len(info) > 1:
                 data["from"] = info[0]
                 data["host"] = info[1]
-                if data["from"].lower() not in self.whitelist:
-                    print "not on whitelist"
-                    return
                     
             
             
