@@ -29,7 +29,7 @@ class Bot(Observer):
     def __init__(self, server, channels, nick, name):
         self.nick = nick
         
-        self.irc = Irc(self.)
+        self.irc = Irc(self)
         self.irc.connect(server)
         self.irc.set_info(nick, nick)
         # Lock object for sending messages
