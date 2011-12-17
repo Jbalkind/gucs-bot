@@ -26,7 +26,9 @@
 #
 #   Expression      ::= Term (AdOp Term)*
 #
-#   Term            ::= Number (MulOp Number)*
+#   Term            ::= Factor (MulOp Factor)*
+#
+#   Factor          ::= Number ('^' Number)*
 #
 #   Number          ::= IntLiteral
 #                   |   FloatLiteral
@@ -330,24 +332,29 @@ class SimpleParser(object):
 
     def parse_term(self):
         """Parses a term."""
-        number = self.parse_number()
+        factor = self.parse_factor()
         tokType = self.token.get_type()
-        while (tokType == "MUL" or tokType == "DIV" or
-               tokType == "POW"):
+        while tokType == "MUL" or tokType == "DIV":
             self.accept_tok()
             if tokType == "MUL":
-                number *= self.parse_number()
+                factor *= self.parse_factor()
             elif tokType == "DIV":
                 try:
-                    number /= self.parse_number()
+                    factor /= self.parse_factor()
                 except ZeroDivisionError as e:
-                    raise SimpleSyntaxError("0' in '{}/{}".format(number, 0),
+                    raise SimpleSyntaxError("0' in '{}/{}".format(factor, 0),
                                             "Non-zero number")
-            else:
-                number **= self.parse_number()
             tokType = self.token.get_type()
+        return factor
+
+    def parse_factor(self):
+        """Parses a factor."""
+        number = self.parse_number()
+        while self.token.is_type("POW"):
+            self.accept_tok()
+            number **= self.parse_number()
         return number
-        
+            
     def parse_number(self):
         """Parses a number."""
         sp = self.token.get_spelling()
