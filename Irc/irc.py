@@ -16,7 +16,7 @@ class Irc:
         self.socket = socket.socket()
 
         # Queue for sending messages to the server in a buffered way to prevent throttling / disconnection
-        self.messageBuffer = Queue(0)
+        self.messageBuffer = Queue.Queue(0)
 
         # Thread for handling the Queue
         self.bufferThread = Thread(target=worker)
