@@ -21,7 +21,7 @@ class Irc:
 
         # Thread for handling the Queue
         self.bufferThread = Thread(target=self.sendBufferedMessages)
-        self.bufferedThread.start()
+        self.bufferThread.start()
 
 
     # Reads messages from queue and sends at a fixed time interval
