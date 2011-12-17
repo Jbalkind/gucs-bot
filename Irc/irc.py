@@ -18,7 +18,8 @@ class Irc:
         self.messageBuffer = Queue()
 
         # Thread for handling the Queue
-        self.bufferThread = messageBuffer.start
+        self.bufferThread = Thread(target=worker)
+        t.start()
 
 
     # Reads messages from queue and sends at a fixed time interval
