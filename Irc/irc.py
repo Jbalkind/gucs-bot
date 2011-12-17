@@ -1,10 +1,10 @@
 import socket
 import binascii
-from time import sleep
+import time
 import string
 import sys, traceback
 import Queue
-import threading
+from threading import Thread
 
 class Irc:
     """ A simple class for basic IRC access """
