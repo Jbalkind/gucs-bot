@@ -20,7 +20,7 @@ class Irc:
         self.messageBuffer = Queue.Queue(0)
 
         # Thread for handling the Queue
-        self.bufferThread = Thread(target=worker)
+        self.bufferThread = Thread(target=sendBufferedMessages)
         t.start()
 
 
