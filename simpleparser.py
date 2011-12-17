@@ -20,7 +20,7 @@
 #
 ##########################################################
 #
-#   Program         ::= Smt | '`' Expression
+#   Program         ::= Smt | '`' ('-')? Expression
 #
 #   Smt             ::= 'print' StringLiteral
 #
@@ -77,8 +77,9 @@ class Token(object):
     # Map tokens to spelling
     toks = {"NUMBER" : "<NUMBER>", "IDENT" : "<IDENT>", "PRINT" : "print",
             "LPAREN" : "(", "RPAREN" : ")", "MUL" : "*", "QUOTE" : "\"",
-            "ADD" : "+", "DIV" : "/", "SUB" : "-", "POW" : "^",
-            "ERROR" : "error", "EOT" : "end-of-text", "BACKTICK" : "`",
+            "ADD" : "+", "DIV" : "/", "SUB" : "-",
+            "POW" : "^", "ERROR" : "error",
+            "EOT" : "end-of-text", "BACKTICK" : "`",
             "STRING_LITERAL" : "[^\"]"}
     def __init__(self, sp, tok):
         """Creates a Token instance.
@@ -311,7 +312,12 @@ class SimpleParser(object):
     
     def parse_expr(self):
         """Parses an expression."""
-        term = self.parse_term()
+        # Support for unary minus symbol
+        if self.token.is_type("SUB"):
+            self.accept_tok()
+            term = - self.parse_term()
+        else:
+            term = self.parse_term()
         while (self.token.is_type("ADD") or
                self.token.is_type("SUB")):
             if self.token.is_type("ADD"):
