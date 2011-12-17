@@ -13,6 +13,22 @@ class Irc:
     
     def __init__(self):
         self.socket = socket.socket()
+
+        # Queue for sending messages to the server in a buffered way to prevent throttling / disconnection
+        self.messageBuffer = Queue()
+
+        # Thread for handling the Queue
+        self.bufferThread = messageBuffer.start
+
+
+    # Reads messages from queue and sends at a fixed time interval
+    def sendBufferedMessages():
+        while True:
+            current = bufferThread.get(True)
+            time.sleep(1)
+            
+            self.socket.send(current)
+        
       
     
     def connect(self, server, port = 6667):
@@ -67,8 +83,8 @@ class Irc:
             for line in string.split(msg,'\n'):
                 line2 = line.encode( "utf-8" )
                 print line2
-                sleep(1)
-                self.socket.send('PRIVMSG {} :{}\r\n'.format(channel, line2))
+                messageBuffer.put('PRIVMSG {} :{}\r\n'.format(channel, line2))
+                
         except:
             traceback.print_exc(file=sys.stdout)
             self.socket.send(u"PRIVMSG {} :{}\r\n".format(channel, "[an exception was raised]"))
