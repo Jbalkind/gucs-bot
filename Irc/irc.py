@@ -3,6 +3,7 @@ import binascii
 from time import sleep
 import string
 import sys, traceback
+import Queue
 
 class Irc:
     """ A simple class for basic IRC access """
@@ -15,7 +16,7 @@ class Irc:
         self.socket = socket.socket()
 
         # Queue for sending messages to the server in a buffered way to prevent throttling / disconnection
-        self.messageBuffer = Queue()
+        self.messageBuffer = Queue(0)
 
         # Thread for handling the Queue
         self.bufferThread = Thread(target=worker)
