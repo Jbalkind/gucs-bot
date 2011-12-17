@@ -13,6 +13,7 @@ import re
 import os
 import argparse
 import sys
+import Queue
 
 class Observer:
     def notify(self, msg):
