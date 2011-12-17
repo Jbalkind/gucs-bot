@@ -338,7 +338,11 @@ class SimpleParser(object):
             if tokType == "MUL":
                 number *= self.parse_number()
             elif tokType == "DIV":
-                number /= self.parse_number()
+                try:
+                    number /= self.parse_number()
+                except ZeroDivisionError as e:
+                    raise SimpleSyntaxError("0' in '{}/{}".format(number, 0),
+                                            "Non-zero number")
             else:
                 number **= self.parse_number()
             tokType = self.token.get_type()
