@@ -86,7 +86,7 @@ class Irc:
             for line in string.split(msg,'\n'):
                 line2 = line.encode( "utf-8" )
                 print line2
-                messageBuffer.put('PRIVMSG {} :{}\r\n'.format(channel, line2))
+                self.messageBuffer.put('PRIVMSG {} :{}\r\n'.format(channel, line2))
                 
         except:
             traceback.print_exc(file=sys.stdout)
