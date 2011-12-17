@@ -4,7 +4,7 @@ from time import sleep
 import string
 import sys, traceback
 import Queue
-from threading import Thread
+import threading
 
 class Irc:
     """ A simple class for basic IRC access """
