@@ -25,7 +25,7 @@ class Irc:
 
 
     # Reads messages from queue and sends at a fixed time interval
-    def sendBufferedMessages():
+    def sendBufferedMessages(self):
         while True:
             current = bufferThread.get(True)
             time.sleep(1)
