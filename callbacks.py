@@ -486,7 +486,7 @@ def parse(bot, data):
         def send(self, msg):
             bot.send(msg, channel=self.theChannel)
     a = b(bot, data["to"])
-    string = data["message"].replace("/", "")
+    string = data["message"].replace("\\", "")
     bot.parser.parse(a, string, user)
 
 #This list stores patterns and an associated text response. These are
@@ -523,4 +523,4 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("`.*", parse),
                  ("print .*", parse),
                  ("var .*", parse),
-                 ("/", parse)]
+                 ("\\", parse)]

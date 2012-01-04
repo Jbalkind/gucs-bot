@@ -1,7 +1,8 @@
-# Simple Parser for a simple language (if it even qualifies as 'language').
+# Simple Parser for a simple language called GUTS
+# (if it even qualifies as 'language').
 # Created by Craig McL <mistercouk@gmail.com> on 6/12/2011
-# Last edited on 26/12/2011 by Craig McL <mistercouk@gmail.com>
-# EBNF Grammar defined below of the SimplePyLanguage.
+# Last edited on 4/1/2012 by Craig McL <mistercouk@gmail.com>
+# EBNF Grammar defined below for GUTS.
 #
 # Note there is alot of 'filler' nonterminal symbols
 # defined here that are not implemented in the parser
