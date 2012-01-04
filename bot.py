@@ -9,6 +9,7 @@ from callbacks import PhraseResponse
 from Irc.irc import Irc
 from datetime import datetime
 from simpleparser import SimpleParser
+from contextanalyser import ContextAnalyser
 import re
 import os
 import argparse
@@ -57,8 +58,8 @@ class Bot(Observer):
         # Create bot's RSSReader
         self.rssReader = RSSReader()
 
-        # Create bot's simple parser
-        self.parser = SimpleParser()
+        # Create bot's simple parser and context analyser
+        self.parser = SimpleParser(ContextAnalyser())
         
         
     def notify(self, data):

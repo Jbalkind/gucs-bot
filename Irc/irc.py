@@ -83,7 +83,7 @@ class Irc:
             raise NoInfoSet
 
         try:
-            for line in string.split(msg,'\n'):
+            for line in msg.split('\n'):
                 line2 = line.encode( "utf-8" )
                 print line2
                 self.messageBuffer.put('PRIVMSG {} :{}\r\n'.format(channel, line2))

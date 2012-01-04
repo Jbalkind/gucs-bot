@@ -16,7 +16,6 @@ from BaseHTTPServer import BaseHTTPRequestHandler
 calef_nicks = ["calef37", "scarface", "cow hoof", "cow calf", 
 	       "leatherback", "The Samurai", "Colin", "sits next to Heather", "has a bit of facial hair", "Calm"]
 	       
-blacklist = ["finde"];
 cur_boss = 0
 boss_phrases = ["TALK TO CORPORATE", "APPROVE MEMOS", "LEAD A WORKSHOP",
 		"REMEMBER BIRTHDAYS", "DIRECT WORKFLOW", "MY OWN BATHROOM", 
@@ -479,14 +478,16 @@ def del_feed(bot, data):
 
 def parse(bot, data):
     """Parse the text received in the message."""
+    # Pass username into parser to get the correct context
+    user = data["from"]
     class b(object):
         def __init__(self, bot, theChannel):
             self.theChannel = theChannel
         def send(self, msg):
             bot.send(msg, channel=self.theChannel)
     a = b(bot, data["to"])
-    string = data["message"].replace(">>", "").strip()
-    bot.parser.parse(a, string)
+    string = data["message"].replace("/", "")
+    bot.parser.parse(a, string, user)
 
 #This list stores patterns and an associated text response. These are
 #loaded by the bot on startup or on !update
@@ -520,4 +521,6 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("@delfeed \w+", del_feed),
                  # For parser
                  ("`.*", parse),
-                 ("print .*", parse)]
+                 ("print .*", parse),
+                 ("var .*", parse),
+                 ("/", parse)]

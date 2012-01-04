@@ -1,6 +1,6 @@
 # Simple Parser for a simple language (if it even qualifies as 'language').
 # Created by Craig McL <mistercouk@gmail.com> on 6/12/2011
-# Last edited on 16/12/2011 by Craig McL <mistercouk@gmail.com>
+# Last edited on 26/12/2011 by Craig McL <mistercouk@gmail.com>
 # EBNF Grammar defined below of the SimplePyLanguage.
 #
 # Note there is alot of 'filler' nonterminal symbols
@@ -20,9 +20,16 @@
 #
 ##########################################################
 #
-#   Program         ::= Smt | '`' ('-')? Expression
+#   Program         ::= Smt
+#                   |   '`' ('-')? Expression
 #
 #   Smt             ::= 'print' StringLiteral
+#                   |   'var' Identifier '=' Expression
+#                   |   'create' Access NameSpace
+#                   |   'use' NameSpace
+#                   |   'share' NameSpace 'with' User
+#                   |   'ns'
+#
 #
 #   Expression      ::= Term (AdOp Term)*
 #
@@ -33,6 +40,7 @@
 #   Number          ::= IntLiteral
 #                   |   FloatLiteral
 #                   |   '(' Expression ')'
+#                   |   Identifier
 #
 #   AdOp            ::= '+' | '-'
 #
@@ -46,8 +54,17 @@
 #
 #   FloatLiteral    ::= '([0-9])*' '.' '([0-9])*'
 #
+#   Access          ::= 'public'
+#                   |   'private'
+#
+#   NameSpace       ::= Identifier
+#
+#   User            ::= Identifer
+#
+#
 
 import re
+from contextanalyser import *
 
 # Test class
 class b(object):
@@ -73,15 +90,18 @@ class SimpleSyntaxError(Exception):
 class Token(object):
     """Defines the tokens recognised by the parser."""
     # Quick access to punctuation literals
-    punct = ["(", ")", "*", "+", "/", "-", "^", "`"]
+    punct = ["(", ")", "*", "+", "/", "-", "^", "`", "="]
     # Some keywords
-    keywords = ["PRINT"]
+    keywords = ["PRINT", "VAR", "CREATE", "PUBLIC", "PRIVATE",
+                "USE", "WITH", "SHARE", "NS"]
     # Map tokens to spelling
     toks = {"NUMBER" : "<NUMBER>", "IDENT" : "<IDENT>", "PRINT" : "print",
             "LPAREN" : "(", "RPAREN" : ")", "MUL" : "*", "QUOTE" : "\"",
-            "ADD" : "+", "DIV" : "/", "SUB" : "-",
-            "POW" : "^", "ERROR" : "error",
-            "EOT" : "end-of-text", "BACKTICK" : "`",
+            "ADD" : "+", "DIV" : "/", "SUB" : "-", "ASSIGN" : "=",
+            "POW" : "^", "ERROR" : "error", "VAR" : "var",
+            "EOT" : "end-of-text", "BACKTICK" : "`", "CREATE" : "create",
+            "PUBLIC" : "public", "PRIVATE" : "private",
+            "USE" : "use", "WITH" : "with", "SHARE" : "share", "NS" : "ns",
             "STRING_LITERAL" : "[^\"]"}
     def __init__(self, sp, tok):
         """Creates a Token instance.
@@ -250,14 +270,13 @@ class SimpleParser(object):
     initialisation is performed in the parse method which takes the 'bot'
     and the str object to be parsed.
     """
-    def __init__(self):
-        """A does-nothing constructor.
+    def __init__(self, contextAnalyser):
+        """Stores the ContextAnalyser object passed in for later use.
 
-        Here only for completeness but it isn't guaranteed to stay empty in
-        future versions.
+        
         """
-        pass
-
+        self.context = contextAnalyser
+        
     def accept(self, tok):
         """Checks that the type of the next token in the stream is tok.
 
@@ -280,9 +299,14 @@ class SimpleParser(object):
         if hasattr(self, "token"):
             self.token = self.lexer.get_next()
         
-    def parse(self, bot, string):
-        """Initialises the resources and starts the parsing of string."""
+    def parse(self, bot, string, user):
+        """Initialises the resources and starts the parsing of string.
+
+        user is the name of the user that sent the string to be executed
+        we need to record this name for later use with the context analyser.
+        """
         self.bot = bot
+        self.user = user
         self.lexer = Lexer(string)
         self.token = self.lexer.get_next()
         self.parse_program()
@@ -290,23 +314,74 @@ class SimpleParser(object):
     def parse_program(self):
         """Parse a program in accordance with the grammar."""
         try:
-            if self.token.is_type("PRINT"):
-                self.accept_tok()
-                self.parse_print()
-            elif self.token.is_type("BACKTICK"):
+            if self.token.is_type("BACKTICK"):
                 self.accept_tok()
                 self.bot.send(">> {}".format(self.parse_cal()))
             else:
-                raise SimpleSyntaxError(self.token.get_spelling(), "PROGRAM")
+                self.parse_smt()
         except SimpleSyntaxError as e:
-             self.bot.send("{}".format(e))   
+             self.bot.send("{}".format(e))
+        except ContextError as e:
+             self.bot.send("{}".format(e))
+
+    def parse_smt(self):
+        """Parse a statement in accordance with the grammar rules."""
+        if self.token.is_type("PRINT"):
+            self.accept_tok()
+            self.parse_print()
+        elif self.token.is_type("VAR"):
+            self.accept_tok()
+            # Add the variable to the namespace with a placeholder
+            name = self.token.get_spelling()
+            self.accept_tok() # Accept the identifer
+            self.accept("ASSIGN")
+            # Parse the expression and place the result in the variable
+            self.context.add_ident(self.user, name, self.parse_cal())
+        elif self.token.is_type("CREATE"):
+            self.accept_tok()
+            access = self.parse_access()
+            # Create namespace using context analyser
+            name = self.token.get_spelling()
+            self.accept_tok()
+            self.context.create_ns(name, self.user, access)
+        elif self.token.is_type("USE"):
+            self.accept_tok()
+            # Use namespace using context analyser
+            if self.token.is_type("IDENT"):
+                try:
+                    self.context.change_ns(self.user,
+                                           self.token.get_spelling())
+                except ContextError as e:
+                    self.bot.send("{}".format(e))
+            self.accept_tok() # Accept namespace name
+        elif self.token.is_type("SHARE"):
+            self.accept_tok()
+            ns = self.token.get_spelling()
+            self.accept_tok()
+            self.accept("WITH")
+            username = self.token.get_spelling()
+            self.accept_tok()
+            # Add user to namespace user list using context analyser
+            try:
+                self.context.share_ns(self.user, username, ns)
+            except ContextError as e:
+                self.bot.send("{}".format(e))
+        elif self.token.is_type("NS"):
+            self.accept_tok()
+            self.bot.send(">> {}".format(self.context.get_ns_name(self.user)))
+        else:
+            raise SimpleSyntaxError(self.token.get_spelling(), "STATEMENT")
 
     def parse_print(self):
         """Parses a print statement."""
         self.bot.send(">> {}".format(self.parse_string_literal()))
 
     def parse_cal(self):
-        """Parses a calculation."""
+        """Parses a calculation.
+
+        This is really just implicit in the grammar as an expression
+        but the code is separated so as not to bloat the expr method.
+        """
         expr = self.parse_expr()
         if not self.token.is_type("EOT"):
             raise SimpleSyntaxError(self.token.get_spelling(), "<OPERATOR>")
@@ -364,6 +439,16 @@ class SimpleParser(object):
             expr = self.parse_expr()
             self.accept("RPAREN")
             return expr
+        elif self.token.is_type("IDENT"):
+            ident = self.token.get_spelling()
+            try:
+                value = self.context.get_ident(self.user, ident)
+            except ContextError as e:
+                raise
+            else:
+                return value
+            finally:
+                self.accept_tok()
         
         try:
             if sp.isdigit():
@@ -385,3 +470,15 @@ class SimpleParser(object):
         else:
             raise SimpleSyntaxError(self.token.get_spelling(),
                                     "STRING_LITERAL")
+
+    def parse_access(self):
+        """Parses the access modifier."""
+        if self.token.is_type("PUBLIC"):
+            self.accept_tok()
+            return True
+        elif self.token.is_type("PRIVATE"):
+            self.accept_tok()
+            return False
+        else:
+            raise SimpleSyntaxError(self.token.get_spelling(),
+                                    "Access Modifier")
