@@ -523,4 +523,4 @@ callback_list = [("(!|@)wiki \w+", wikisearch),
                  ("`.*", parse),
                  ("print .*", parse),
                  ("var .*", parse),
-                 ("\\", parse)]
+                 ("#", parse)]
