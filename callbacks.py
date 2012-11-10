@@ -248,7 +248,7 @@ def twittersearch(bot, data):
 		 channel=data["to"])
     
     for result in results:
-	bot.send("* {}: {}".format(result[0], result[1]),
+	bot.send("* {}: {}".format(result[0].encode('utf-8'), result[1].encode('utf-8')),
 		 channel=data["to"])
     
 

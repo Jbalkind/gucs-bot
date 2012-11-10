@@ -84,14 +84,14 @@ class Irc:
 
         try:
             for line in msg.split('\n'):
-                line2 = line.encode( "utf-8" )
-                print line2
-                self.messageBuffer.put('PRIVMSG {} :{}\r\n'.format(channel, line2))
+                #line2 = line.encode( "utf-8" )
+                #print line2
+                self.messageBuffer.put('PRIVMSG {} :{}\r\n'.format(channel, line))
                 
         except:
             traceback.print_exc(file=sys.stdout)
-            self.socket.send(u"PRIVMSG {} :{}\r\n".format(channel, "[an exception was raised]"))
-         
+            self.socket.send(u"PRIVMSG {} :{} :{}\r\n".format(channel, "[an exception was raised]: ", sys.exc_info()[0]))
+           
     def me(self, channel, msg):
 	"""Send a /me command to the specifed room."""
         if not self.nickname:
