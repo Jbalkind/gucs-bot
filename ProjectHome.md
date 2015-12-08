@@ -1,0 +1,1 @@
+An IRC bot for the Glasgow School of Computing Science channel.
